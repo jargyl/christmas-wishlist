@@ -16,6 +16,7 @@
     "loading": "Loading...",
     "accountCreated": "Account created successfully!",
     "usernameTaken": "Username already taken",
+    "usernameNoSpaces": "Username cannot contain spaces",
     "invalidImageUrl": "Please enter a valid image URL (jpg, jpeg, png, or webp)",
     "usernameRequirements": "Username can only contain letters, numbers, underscores, and hyphens",
     "invalidCredentials": "Invalid login credentials"
@@ -28,6 +29,10 @@
     "price": "Price",
     "link": "Link",
     "priority": "Mark as Priority",
+    "validation": {
+      "required": "Required",
+      "optional": "Optional"
+    },
     "sort": {
       "price": "Sort by Price",
       "priority": "Sort by Priority"

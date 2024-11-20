@@ -76,7 +76,7 @@ export default function WishlistItem({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.title")} *
+              {t("wishlist.title")}
             </label>
             <input
               type="text"
@@ -90,7 +90,7 @@ export default function WishlistItem({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.description")}
+              {t("wishlist.description")} ({t("wishlist.validation.optional")})
             </label>
             <textarea
               className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
@@ -102,7 +102,7 @@ export default function WishlistItem({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.price")} *
+              {t("wishlist.price")} in €
             </label>
             <input
               type="number"
@@ -118,7 +118,7 @@ export default function WishlistItem({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.link")}
+              {t("wishlist.link")} ({t("wishlist.validation.optional")})
             </label>
             <input
               type="url"
@@ -162,7 +162,9 @@ export default function WishlistItem({
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
           >
             <CheckIcon className="h-4 w-4 mr-2" />
-            {loading ? t("wishlist.actions.saving") : t("wishlist.actions.save")}
+            {loading
+              ? t("wishlist.actions.saving")
+              : t("wishlist.actions.save")}
           </button>
         </div>
       </form>

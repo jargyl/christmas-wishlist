@@ -34,6 +34,12 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
     e.preventDefault();
     setLoading(true);
 
+    if (formData.username.includes(" ")) {
+      toast.error(t("auth.usernameNoSpaces"));
+      setLoading(false);
+      return;
+    }
+
     if (formData.avatarUrl && !validateImageUrl(formData.avatarUrl)) {
       toast.error(t("auth.invalidImageUrl"));
       setLoading(false);

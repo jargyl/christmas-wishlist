@@ -16,6 +16,7 @@
     "loading": "Laden...",
     "accountCreated": "Account succesvol aangemaakt!",
     "usernameTaken": "Deze gebruikersnaam is al in gebruik",
+    "usernameNoSpaces": "Gebruikersnaam mag geen spaties bevatten",
     "invalidImageUrl": "Voer een geldige afbeeldings-URL in (jpg, jpeg, png, of webp)",
     "usernameRequirements": "Gebruikersnaam mag alleen letters, cijfers, underscores en streepjes bevatten",
     "invalidCredentials": "Ongeldige inloggegevens"
@@ -28,6 +29,10 @@
     "price": "Prijs",
     "link": "Link",
     "priority": "Markeer als Prioriteit",
+    "validation": {
+      "required": "Verplicht",
+      "optional": "Optioneel"
+    },
     "sort": {
       "price": "Sorteer op Prijs",
       "priority": "Sorteer op Prioriteit"
