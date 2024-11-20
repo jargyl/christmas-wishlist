@@ -86,87 +86,88 @@ export default function App() {
     : items;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-green-50">
-      <Toaster position="top-right" />
-      <header className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <GiftIcon className="h-8 w-8 text-red-500" />
-              <h1 className="text-2xl font-bold text-gray-900">
+    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed">
+      <div className="min-h-screen bg-white/90 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto p-6">
+          <Toaster position="top-right" />
+
+          <header className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-2">
+              <GiftIcon className="w-8 h-8 text-red-600" />
+              <h1 className="text-4xl font-bold text-gray-800">
                 {t("app.title")}
               </h1>
             </div>
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center gap-4">
               <LanguageSelector />
               {currentUser && (
-                <div className="flex items-center space-x-2">
-                  <UserAvatar user={currentUser} />
+                <div className="flex items-center gap-2">
+                  <UserAvatar user={currentUser} size="md" />
                   <span className="text-gray-700">{currentUser.username}</span>
                 </div>
               )}
               <button
                 onClick={handleSignOut}
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
               >
-                <LogOutIcon className="h-5 w-5" />
-                <span>{t("auth.signOut")}</span>
+                <LogOutIcon className="w-5 h-5" />
+                {t("auth.signOut")}
               </button>
+            </div>
+          </header>
+
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div className="flex flex-wrap gap-4 mb-6">
+              <button
+                onClick={() => setSelectedUser(null)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
+                  !selectedUser
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {t("app.allWishlists")}
+              </button>
+              {users.map((user) => (
+                <button
+                  key={user.id}
+                  onClick={() => setSelectedUser(user.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
+                    selectedUser === user.id
+                      ? "bg-red-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  <UserAvatar user={user} size="sm" />
+                  <span>{user.username}</span>
+                </button>
+              ))}
+            </div>
+
+            {(!selectedUser || selectedUser === session.user.id) && (
+              <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
+            )}
+
+            <div className="space-y-4">
+              {filteredItems.map((item) => (
+                <WishlistItemComponent
+                  key={item.id}
+                  item={item}
+                  user={users.find((u) => u.id === item.user_id)}
+                  canEdit={item.user_id === session.user.id}
+                  onDelete={handleDelete}
+                  onUpdate={fetchItems}
+                />
+              ))}
+              {filteredItems.length === 0 && (
+                <p className="text-center text-gray-500 py-8">
+                  {t("wishlist.noWishes")}
+                </p>
+              )}
             </div>
           </div>
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 flex flex-wrap gap-4">
-          <button
-            onClick={() => setSelectedUser(null)}
-            className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full ${
-              !selectedUser
-                ? "bg-red-600 text-white"
-                : "bg-white text-gray-700 hover:bg-gray-50"
-            }`}
-          >
-            {t("app.allWishlists")}
-          </button>
-          {users.map((user) => (
-            <button
-              key={user.id}
-              onClick={() => setSelectedUser(user.id)}
-              className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full ${
-                selectedUser === user.id
-                  ? "bg-red-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <UserAvatar user={user} size="sm" />
-              <span>{user.username}</span>
-            </button>
-          ))}
-        </div>
-
-        {(!selectedUser || selectedUser === session.user.id) && (
-          <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
-        )}
-
-        <div className="space-y-6">
-          {filteredItems.map((item) => (
-            <WishlistItemComponent
-              key={item.id}
-              item={item}
-              user={users.find((u) => u.id === item.user_id)}
-              canEdit={item.user_id === session.user.id}
-              onDelete={handleDelete}
-              onUpdate={fetchItems}
-            />
-          ))}
-          {filteredItems.length === 0 && (
-            <p className="text-center text-gray-500 py-8">
-              {t("wishlist.noWishes")}
-            </p>
-          )}
-        </div>
-      </main>
+      </div>
     </div>
   );
 }

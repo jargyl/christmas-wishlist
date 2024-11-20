@@ -1,10 +1,9 @@
-//V
 import React, { useState } from "react";
 import { WishlistItem as WishlistItemType, User } from "../types";
 import {
   Trash2Icon,
-  LinkIcon,
-  PencilIcon,
+  ExternalLinkIcon,
+  EditIcon,
   XIcon,
   CheckIcon,
   StarIcon,
@@ -182,64 +181,60 @@ export default function WishlistItem({
 
   return (
     <div
-      className={`rounded-lg shadow-md p-6 transition-transform hover:scale-[1.02] ${
+      className={`p-4 rounded-lg shadow-md mb-4 ${
         priorityColors[item.priority]
-      }`}
+      } transition-all hover:shadow-lg`}
     >
       <div className="flex justify-between items-start">
         <div className="flex-1">
           {user && (
-            <div className="flex items-center space-x-3 mb-2">
+            <div className="flex items-center gap-2 mb-1">
               <UserAvatar user={user} size="sm" />
-              <span className="text-md text-gray-600 ml-2">
+              <span className="text-sm text-gray-600">
                 {user.username}
                 {t("wishlist.possessiveWish")}
               </span>
             </div>
           )}
-          <div className="flex items-center gap-2">
-            <h3 className="text-xl font-semibold text-gray-800">
-              {item.title}
-            </h3>
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            {item.title}
             {item.priority === "high" && (
-              <StarIcon className="h-5 w-5 text-red-500 fill-red-500" />
+              <StarIcon className="w-4 h-4 text-red-500 fill-red-500" />
             )}
-          </div>
+          </h3>
           {item.description && (
-            <p className="text-gray-600 mt-2">{item.description}</p>
+            <p className="text-gray-600 mt-1">{item.description}</p>
           )}
-          <div className="flex items-center gap-4 mt-4">
-            <span className="text-lg font-medium text-green-600">
-              ${item.price.toFixed(2)}
-            </span>
-          </div>
+          <p className="text-green-700 font-semibold mt-2">
+            €{item.price.toFixed(2)}
+          </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex gap-2">
           {item.link && (
             <a
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-700"
+              className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
             >
-              <LinkIcon className="h-5 w-5" />
+              <ExternalLinkIcon className="w-5 h-5" />
             </a>
           )}
           {canEdit && (
             <>
               <button
                 onClick={() => setIsEditing(true)}
-                className="text-blue-500 hover:text-blue-700"
+                className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                 title={t("wishlist.actions.edit")}
               >
-                <PencilIcon className="h-5 w-5" />
+                <EditIcon className="w-5 h-5" />
               </button>
               <button
                 onClick={() => onDelete(item.id)}
-                className="text-red-500 hover:text-red-700"
+                className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
                 title={t("wishlist.actions.delete")}
               >
-                <Trash2Icon className="h-5 w-5" />
+                <Trash2Icon className="w-5 h-5" />
               </button>
             </>
           )}

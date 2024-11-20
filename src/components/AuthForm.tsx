@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../lib/supabase";
-import { GiftIcon } from "lucide-react";
+import { LogInIcon, GiftIcon } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
@@ -98,18 +98,16 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-green-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed flex items-center justify-center p-4">
       <Toaster position="top-right" />
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center">
-            <GiftIcon className="h-12 w-12 text-red-500" />
-          </div>
+      <div className="max-w-sm w-full bg-white rounded-xl shadow-lg p-8">
+        <div className="flex justify-center mb-6">
           <LanguageSelector />
         </div>
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          {t("app.title")}
-        </h2>
+        <div className="flex items-center justify-center gap-2 mb-8">
+          <GiftIcon className="w-8 h-8 text-red-600" />
+          <h1 className="text-3xl font-bold text-gray-800">{t("app.title")}</h1>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-6">
           {!isLogin && (
             <div>
@@ -164,13 +162,18 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+            className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {loading
-              ? t("auth.loading")
-              : isLogin
-              ? t("auth.signIn")
-              : t("auth.signUp")}
+            {loading ? (
+              t("auth.loading")
+            ) : isLogin ? (
+              <>
+                <LogInIcon className="h-5 w-5" />
+                {t("auth.signIn")}
+              </>
+            ) : (
+              t("auth.signUp")
+            )}
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">

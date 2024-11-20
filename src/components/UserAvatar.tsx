@@ -1,20 +1,20 @@
-import React from 'react';
-import { User } from '../types';
+import React from "react";
+import { User } from "../types";
 
 interface UserAvatarProps {
   user: User;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
-export default function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
+export default function UserAvatar({ user, size = "md" }: UserAvatarProps) {
   const sizeClasses = {
-    sm: 'w-8 h-8 text-xs',
-    md: 'w-10 h-10 text-sm',
-    lg: 'w-12 h-12 text-base',
+    sm: "w-6 h-6 text-xs",
+    md: "w-8 h-8 text-sm",
+    lg: "w-10 h-10 text-base",
   };
 
   const getInitials = (username: string) => {
-    if (!username) return '??';
+    if (!username) return "??";
     // Take first two characters of username
     return username.slice(0, 2).toUpperCase();
   };
