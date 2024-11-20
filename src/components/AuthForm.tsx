@@ -4,6 +4,7 @@ import { LogInIcon, GiftIcon } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
+import Tooltip from "./Tooltip";
 
 interface AuthFormProps {
   onAuth: () => void;
@@ -102,7 +103,9 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
       <Toaster position="top-right" />
       <div className="max-w-sm w-full bg-white rounded-xl shadow-lg p-8">
         <div className="flex justify-center mb-6">
-          <LanguageSelector />
+          <Tooltip text={t("help.language")} position="top">
+            <LanguageSelector />
+          </Tooltip>
         </div>
         <div className="flex items-center justify-center gap-2 mb-8">
           <GiftIcon className="w-8 h-8 text-red-600" />

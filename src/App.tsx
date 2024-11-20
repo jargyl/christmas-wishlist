@@ -86,6 +86,12 @@ export default function App() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
+    setSession(null);
+    setUsers([]);
+    setItems([]);
+    setSelectedUser(null);
+
+    localStorage.clear();
   };
 
   const sortItems = (items: WishlistItem[]) => {
