@@ -13,9 +13,12 @@ import {
   LogOutIcon,
   HelpCircleIcon,
   ExternalLinkIcon,
+  ArrowUpDownIcon,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+
+type SortOption = "priority" | "price";
 
 export default function App() {
   const { t } = useTranslation();
@@ -24,6 +27,7 @@ export default function App() {
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
+  const [sortBy, setSortBy] = useState<SortOption>("priority");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -84,6 +88,17 @@ export default function App() {
     setSession(null);
   };
 
+  const sortItems = (items: WishlistItem[]) => {
+    return [...items].sort((a, b) => {
+      if (sortBy === "price") {
+        return b.price - a.price;
+      } else {
+        const priorityOrder = { high: 3, medium: 2, low: 1 };
+        return priorityOrder[b.priority] - priorityOrder[a.priority];
+      }
+    });
+  };
+
   if (!session) {
     return <AuthForm onAuth={() => {}} />;
   }
@@ -92,6 +107,7 @@ export default function App() {
   const filteredItems = selectedUser
     ? items.filter((item) => item.user_id === selectedUser)
     : items;
+  const sortedItems = sortItems(filteredItems);
 
   return (
     <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed">
@@ -164,49 +180,67 @@ export default function App() {
               </div>
             )}
 
-            <div className="flex flex-wrap gap-4 mb-6" role="tablist">
-              <Tooltip text={t("help.viewAllTooltip")} position="bottom">
-                <button
-                  onClick={() => setSelectedUser(null)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                    !selectedUser
-                      ? "bg-red-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                  role="tab"
-                  aria-selected={!selectedUser}
-                >
-                  {t("app.allWishlists")}
-                </button>
-              </Tooltip>
-              {users.map((user) => (
-                <Tooltip
-                  key={user.id}
-                  text={t("help.viewUserTooltip", { username: user.username })}
-                  position="bottom"
-                >
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <div className="flex flex-wrap gap-4 flex-1" role="tablist">
+                <Tooltip text={t("help.viewAllTooltip")} position="bottom">
                   <button
-                    onClick={() => setSelectedUser(user.id)}
+                    onClick={() => setSelectedUser(null)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                      selectedUser === user.id
+                      !selectedUser
                         ? "bg-red-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                     role="tab"
-                    aria-selected={selectedUser === user.id}
+                    aria-selected={!selectedUser}
                   >
-                    <UserAvatar user={user} size="sm" />
-                    <span>{user.username}</span>
+                    {t("app.allWishlists")}
                   </button>
                 </Tooltip>
-              ))}
+                {users.map((user) => (
+                  <Tooltip
+                    key={user.id}
+                    text={t("help.viewUserTooltip", {
+                      username: user.username,
+                    })}
+                    position="bottom"
+                  >
+                    <button
+                      onClick={() => setSelectedUser(user.id)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
+                        selectedUser === user.id
+                          ? "bg-red-600 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                      role="tab"
+                      aria-selected={selectedUser === user.id}
+                    >
+                      <UserAvatar user={user} size="sm" />
+                      <span>{user.username}</span>
+                    </button>
+                  </Tooltip>
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <ArrowUpDownIcon className="w-5 h-5 text-gray-500" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  className="border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
+                  <option value="priority">
+                    {t("wishlist.sort.priority")}
+                  </option>
+                  <option value="price">{t("wishlist.sort.price")}</option>
+                </select>
+              </div>
             </div>
+
             {(!selectedUser || selectedUser === session.user.id) && (
               <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
             )}
             <div className="flex-1 overflow-y-auto scrollbar-custom">
               <div className="space-y-4">
-                {filteredItems.map((item) => (
+                {sortedItems.map((item) => (
                   <WishlistItemComponent
                     key={item.id}
                     item={item}
@@ -216,7 +250,7 @@ export default function App() {
                     onUpdate={fetchItems}
                   />
                 ))}
-                {filteredItems.length === 0 && (
+                {sortedItems.length === 0 && (
                   <p className="text-center text-gray-500 py-8">
                     {t("wishlist.noWishes")}
                   </p>

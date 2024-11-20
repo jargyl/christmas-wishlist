@@ -22,6 +22,10 @@
   },
   "wishlist": {
     "possessiveWish": "'s Wens",
+    "sort": {
+      "price": "Sorteer op Prijs",
+      "priority": "Sorteer op Prioriteit"
+    },
     "addWish": "Nieuwe Wens Toevoegen",
     "title": "Titel",
     "description": "Beschrijving",

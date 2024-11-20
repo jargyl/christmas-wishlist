@@ -22,6 +22,10 @@
   },
   "wishlist": {
     "possessiveWish": "'s Wish",
+    "sort": {
+      "price": "Sort by Price",
+      "priority": "Sort by Priority"
+    },
     "addWish": "Add New Wish",
     "title": "Title",
     "description": "Description",
