@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { supabase } from "../lib/supabase";
 import { GiftIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "./LanguageSelector";
 
 interface AuthFormProps {
   onAuth: () => void;
 }
 
 export default function AuthForm({ onAuth }: AuthFormProps) {
+  const { t } = useTranslation();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -31,7 +34,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
     setLoading(true);
 
     if (formData.avatarUrl && !validateImageUrl(formData.avatarUrl)) {
-      toast.error("Please enter a valid image URL (jpg, jpeg, png, or webp)");
+      toast.error(t('auth.invalidImageUrl'));
       setLoading(false);
       return;
     }
@@ -46,7 +49,6 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
         });
         if (error) throw error;
       } else {
-        // Check if username already exists
         const { data: existingUser } = await supabase
           .from("profiles")
           .select("username")
@@ -54,10 +56,9 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           .single();
 
         if (existingUser) {
-          throw new Error("Username already taken");
+          throw new Error(t('auth.usernameTaken'));
         }
 
-        // 1. Sign up the user
         const { data: authData, error: signUpError } =
           await supabase.auth.signUp({
             email,
@@ -71,7 +72,6 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           });
         if (signUpError) throw signUpError;
 
-        // 2. Create the profile record
         if (authData.user) {
           const { error: profileError } = await supabase
             .from("profiles")
@@ -85,7 +85,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           if (profileError) throw profileError;
         }
 
-        toast.success("Account created successfully!");
+        toast.success(t('auth.accountCreated'));
       }
       onAuth();
     } catch (error: any) {
@@ -98,17 +98,20 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-green-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-        <div className="flex items-center justify-center mb-8">
-          <GiftIcon className="h-12 w-12 text-red-500" />
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center">
+            <GiftIcon className="h-12 w-12 text-red-500" />
+          </div>
+          <LanguageSelector />
         </div>
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Family Christmas Wishlist
+          {t('app.title')}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           {!isLogin && (
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Profile Picture URL (optional)
+                {t('auth.profilePicture')}
               </label>
               <input
                 type="url"
@@ -120,19 +123,19 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
                 placeholder="https://example.com/image.jpg"
               />
               <p className="mt-1 text-sm text-gray-500">
-                Enter a URL for your profile picture (jpg, jpeg, png, or webp)
+                {t('auth.profilePictureHint')}
               </p>
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Username
+              {t('auth.username')}
             </label>
             <input
               type="text"
               required
               pattern="[a-zA-Z0-9_-]+"
-              title="Username can only contain letters, numbers, underscores, and hyphens"
+              title={t('auth.usernameRequirements')}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
               value={formData.username}
               onChange={(e) =>
@@ -142,7 +145,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Password
+              {t('auth.password')}
             </label>
             <input
               type="password"
@@ -160,16 +163,16 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
             disabled={loading}
             className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
           >
-            {loading ? "Loading..." : isLogin ? "Sign In" : "Sign Up"}
+            {loading ? t('auth.loading') : isLogin ? t('auth.signIn') : t('auth.signUp')}
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          {isLogin ? "Don't have an account? " : "Already have an account? "}
+          {isLogin ? t('auth.noAccount') : t('auth.haveAccount')}{' '}
           <button
             onClick={() => setIsLogin(!isLogin)}
             className="text-red-600 hover:text-red-500"
           >
-            {isLogin ? "Sign Up" : "Sign In"}
+            {isLogin ? t('auth.signUp') : t('auth.signIn')}
           </button>
         </p>
       </div>

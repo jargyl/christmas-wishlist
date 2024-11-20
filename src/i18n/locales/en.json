@@ -1,0 +1,52 @@
+{
+  "app": {
+    "title": "Family Christmas Wishlist",
+    "allWishlists": "All Wishlists"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "username": "Username",
+    "password": "Password",
+    "profilePicture": "Profile Picture URL (optional)",
+    "profilePictureHint": "Enter a URL for your profile picture (jpg, jpeg, png, or webp)",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "loading": "Loading...",
+    "accountCreated": "Account created successfully!",
+    "usernameTaken": "Username already taken",
+    "invalidImageUrl": "Please enter a valid image URL (jpg, jpeg, png, or webp)",
+    "usernameRequirements": "Username can only contain letters, numbers, underscores, and hyphens"
+  },
+  "wishlist": {
+    "addWish": "Add New Wish",
+    "title": "Title",
+    "description": "Description",
+    "price": "Price",
+    "link": "Link",
+    "priority": "Priority",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "actions": {
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "add": "Add Item",
+      "adding": "Adding...",
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "noWishes": "No wishes found. Add some wishes to get started!",
+    "required": "Required"
+  },
+  "messages": {
+    "itemAdded": "Item added successfully!",
+    "itemUpdated": "Item updated successfully!",
+    "itemDeleted": "Item deleted successfully!",
+    "error": "An error occurred"
+  }
+}

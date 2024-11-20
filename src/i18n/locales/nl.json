@@ -1,0 +1,52 @@
+{
+  "app": {
+    "title": "Familie Kerstlijst",
+    "allWishlists": "Alle Verlanglijstjes"
+  },
+  "auth": {
+    "signIn": "Inloggen",
+    "signUp": "Registreren",
+    "signOut": "Uitloggen",
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "profilePicture": "Profielfoto URL (optioneel)",
+    "profilePictureHint": "Voer een URL in voor je profielfoto (jpg, jpeg, png, of webp)",
+    "noAccount": "Nog geen account?",
+    "haveAccount": "Heb je al een account?",
+    "loading": "Laden...",
+    "accountCreated": "Account succesvol aangemaakt!",
+    "usernameTaken": "Deze gebruikersnaam is al in gebruik",
+    "invalidImageUrl": "Voer een geldige afbeeldings-URL in (jpg, jpeg, png, of webp)",
+    "usernameRequirements": "Gebruikersnaam mag alleen letters, cijfers, underscores en streepjes bevatten"
+  },
+  "wishlist": {
+    "addWish": "Nieuwe Wens Toevoegen",
+    "title": "Titel",
+    "description": "Beschrijving",
+    "price": "Prijs",
+    "link": "Link",
+    "priority": "Prioriteit",
+    "priorities": {
+      "low": "Laag",
+      "medium": "Gemiddeld",
+      "high": "Hoog"
+    },
+    "actions": {
+      "save": "Wijzigingen Opslaan",
+      "saving": "Opslaan...",
+      "cancel": "Annuleren",
+      "add": "Item Toevoegen",
+      "adding": "Toevoegen...",
+      "delete": "Verwijderen",
+      "edit": "Bewerken"
+    },
+    "noWishes": "Geen wensen gevonden. Voeg wat wensen toe om te beginnen!",
+    "required": "Verplicht"
+  },
+  "messages": {
+    "itemAdded": "Item succesvol toegevoegd!",
+    "itemUpdated": "Item succesvol bijgewerkt!",
+    "itemDeleted": "Item succesvol verwijderd!",
+    "error": "Er is een fout opgetreden"
+  }
+}
