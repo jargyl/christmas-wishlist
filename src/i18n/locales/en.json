@@ -17,9 +17,11 @@
     "accountCreated": "Account created successfully!",
     "usernameTaken": "Username already taken",
     "invalidImageUrl": "Please enter a valid image URL (jpg, jpeg, png, or webp)",
-    "usernameRequirements": "Username can only contain letters, numbers, underscores, and hyphens"
+    "usernameRequirements": "Username can only contain letters, numbers, underscores, and hyphens",
+    "invalidCredentials": "Invalid login credentials"
   },
   "wishlist": {
+    "possessiveWish": "'s Wish",
     "addWish": "Add New Wish",
     "title": "Title",
     "description": "Description",

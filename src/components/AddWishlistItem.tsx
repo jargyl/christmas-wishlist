@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
-import { supabase } from '../lib/supabase';
-import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from "react";
+import { supabase } from "../lib/supabase";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface AddWishlistItemProps {
   userId: string;
   onAdd: () => void;
 }
 
-export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps) {
+export default function AddWishlistItem({
+  userId,
+  onAdd,
+}: AddWishlistItemProps) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    price: '',
-    link: '',
-    priority: 'medium',
+    title: "",
+    description: "",
+    price: "",
+    link: "",
+    priority: "medium",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,7 +28,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
     setLoading(true);
 
     try {
-      const { error } = await supabase.from('wishlist_items').insert([
+      const { error } = await supabase.from("wishlist_items").insert([
         {
           user_id: userId,
           title: formData.title,
@@ -38,18 +41,18 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
 
       if (error) throw error;
 
-      toast.success(t('messages.itemAdded'));
+      toast.success(t("messages.itemAdded"));
       setFormData({
-        title: '',
-        description: '',
-        price: '',
-        link: '',
-        priority: 'medium',
+        title: "",
+        description: "",
+        price: "",
+        link: "",
+        priority: "medium",
       });
       setIsOpen(false);
       onAdd();
     } catch (error: any) {
-      toast.error(t('messages.error'));
+      toast.error(t("messages.error"));
     } finally {
       setLoading(false);
     }
@@ -62,14 +65,17 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
           onClick={() => setIsOpen(true)}
           className="w-full py-3 px-4 border-2 border-dashed border-red-300 rounded-lg text-red-600 hover:border-red-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
         >
-          {t('wishlist.addWish')}
+          {t("wishlist.addWish")}
         </button>
       ) : (
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-lg shadow-md p-6"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t('wishlist.title')} *
+                {t("wishlist.title")} *
               </label>
               <input
                 type="text"
@@ -83,7 +89,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t('wishlist.description')}
+                {t("wishlist.description")}
               </label>
               <textarea
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
@@ -95,7 +101,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t('wishlist.price')} *
+                {t("wishlist.price")} *
               </label>
               <input
                 type="number"
@@ -111,7 +117,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t('wishlist.link')}
+                {t("wishlist.link")}
               </label>
               <input
                 type="url"
@@ -124,18 +130,23 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t('wishlist.priority')}
+                {t("wishlist.priority")}
               </label>
               <select
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
                 value={formData.priority}
                 onChange={(e) =>
-                  setFormData({ ...formData, priority: e.target.value as 'low' | 'medium' | 'high' })
+                  setFormData({
+                    ...formData,
+                    priority: e.target.value as "low" | "medium" | "high",
+                  })
                 }
               >
-                <option value="low">{t('wishlist.priorities.low')}</option>
-                <option value="medium">{t('wishlist.priorities.medium')}</option>
-                <option value="high">{t('wishlist.priorities.high')}</option>
+                <option value="low">{t("wishlist.priorities.low")}</option>
+                <option value="medium">
+                  {t("wishlist.priorities.medium")}
+                </option>
+                <option value="high">{t("wishlist.priorities.high")}</option>
               </select>
             </div>
           </div>
@@ -145,14 +156,16 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
               onClick={() => setIsOpen(false)}
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
-              {t('wishlist.actions.cancel')}
+              {t("wishlist.actions.cancel")}
             </button>
             <button
               type="submit"
               disabled={loading}
               className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
             >
-              {loading ? t('wishlist.actions.adding') : t('wishlist.actions.add')}
+              {loading
+                ? t("wishlist.actions.adding")
+                : t("wishlist.actions.add")}
             </button>
           </div>
         </form>

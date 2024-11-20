@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from './lib/supabase';
-import { User, WishlistItem } from './types';
-import AuthForm from './components/AuthForm';
-import WishlistItemComponent from './components/WishlistItem';
-import AddWishlistItem from './components/AddWishlistItem';
-import UserAvatar from './components/UserAvatar';
-import LanguageSelector from './components/LanguageSelector';
-import { GiftIcon, LogOutIcon } from 'lucide-react';
-import toast, { Toaster } from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from "react";
+import { supabase } from "./lib/supabase";
+import { User, WishlistItem } from "./types";
+import AuthForm from "./components/AuthForm";
+import WishlistItemComponent from "./components/WishlistItem";
+import AddWishlistItem from "./components/AddWishlistItem";
+import UserAvatar from "./components/UserAvatar";
+import LanguageSelector from "./components/LanguageSelector";
+import { GiftIcon, LogOutIcon } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export default function App() {
   const { t } = useTranslation();
@@ -37,10 +37,10 @@ export default function App() {
 
   const fetchUsers = async () => {
     const { data, error } = await supabase
-      .from('profiles')
-      .select('id, username, avatar_url');
+      .from("profiles")
+      .select("id, username, avatar_url");
     if (error) {
-      toast.error(t('messages.error'));
+      toast.error(t("messages.error"));
     } else {
       setUsers(data);
     }
@@ -48,11 +48,11 @@ export default function App() {
 
   const fetchItems = async () => {
     const { data, error } = await supabase
-      .from('wishlist_items')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .from("wishlist_items")
+      .select("*")
+      .order("created_at", { ascending: false });
     if (error) {
-      toast.error(t('messages.error'));
+      toast.error(t("messages.error"));
     } else {
       setItems(data);
     }
@@ -60,13 +60,13 @@ export default function App() {
 
   const handleDelete = async (id: string) => {
     const { error } = await supabase
-      .from('wishlist_items')
+      .from("wishlist_items")
       .delete()
       .match({ id });
     if (error) {
-      toast.error(t('messages.error'));
+      toast.error(t("messages.error"));
     } else {
-      toast.success(t('messages.itemDeleted'));
+      toast.success(t("messages.itemDeleted"));
       fetchItems();
     }
   };
@@ -94,7 +94,7 @@ export default function App() {
             <div className="flex items-center space-x-4">
               <GiftIcon className="h-8 w-8 text-red-500" />
               <h1 className="text-2xl font-bold text-gray-900">
-                {t('app.title')}
+                {t("app.title")}
               </h1>
             </div>
             <div className="flex items-center space-x-6">
@@ -110,7 +110,7 @@ export default function App() {
                 className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
               >
                 <LogOutIcon className="h-5 w-5" />
-                <span>{t('auth.signOut')}</span>
+                <span>{t("auth.signOut")}</span>
               </button>
             </div>
           </div>
@@ -123,11 +123,11 @@ export default function App() {
             onClick={() => setSelectedUser(null)}
             className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full ${
               !selectedUser
-                ? 'bg-red-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+                ? "bg-red-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
           >
-            {t('app.allWishlists')}
+            {t("app.allWishlists")}
           </button>
           {users.map((user) => (
             <button
@@ -135,8 +135,8 @@ export default function App() {
               onClick={() => setSelectedUser(user.id)}
               className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full ${
                 selectedUser === user.id
-                  ? 'bg-red-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? "bg-red-600 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
               <UserAvatar user={user} size="sm" />
@@ -162,7 +162,7 @@ export default function App() {
           ))}
           {filteredItems.length === 0 && (
             <p className="text-center text-gray-500 py-8">
-              {t('wishlist.noWishes')}
+              {t("wishlist.noWishes")}
             </p>
           )}
         </div>

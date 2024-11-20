@@ -17,9 +17,11 @@
     "accountCreated": "Account succesvol aangemaakt!",
     "usernameTaken": "Deze gebruikersnaam is al in gebruik",
     "invalidImageUrl": "Voer een geldige afbeeldings-URL in (jpg, jpeg, png, of webp)",
-    "usernameRequirements": "Gebruikersnaam mag alleen letters, cijfers, underscores en streepjes bevatten"
+    "usernameRequirements": "Gebruikersnaam mag alleen letters, cijfers, underscores en streepjes bevatten",
+    "invalidCredentials": "Ongeldige inloggegevens"
   },
   "wishlist": {
+    "possessiveWish": "'s Wens",
     "addWish": "Nieuwe Wens Toevoegen",
     "title": "Titel",
     "description": "Beschrijving",

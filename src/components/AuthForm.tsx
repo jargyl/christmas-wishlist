@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "../lib/supabase";
 import { GiftIcon } from "lucide-react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
 
@@ -34,7 +34,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
     setLoading(true);
 
     if (formData.avatarUrl && !validateImageUrl(formData.avatarUrl)) {
-      toast.error(t('auth.invalidImageUrl'));
+      toast.error(t("auth.invalidImageUrl"));
       setLoading(false);
       return;
     }
@@ -47,7 +47,9 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           email,
           password: formData.password,
         });
-        if (error) throw error;
+        if (error) {
+          toast.error(t("auth.invalidCredentials"));
+        }
       } else {
         const { data: existingUser } = await supabase
           .from("profiles")
@@ -56,7 +58,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           .single();
 
         if (existingUser) {
-          throw new Error(t('auth.usernameTaken'));
+          throw new Error(t("auth.usernameTaken"));
         }
 
         const { data: authData, error: signUpError } =
@@ -85,7 +87,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           if (profileError) throw profileError;
         }
 
-        toast.success(t('auth.accountCreated'));
+        toast.success(t("auth.accountCreated"));
       }
       onAuth();
     } catch (error: any) {
@@ -97,6 +99,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-green-50 flex items-center justify-center p-4">
+      <Toaster position="top-right" />
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
@@ -105,13 +108,13 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           <LanguageSelector />
         </div>
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          {t('app.title')}
+          {t("app.title")}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           {!isLogin && (
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t('auth.profilePicture')}
+                {t("auth.profilePicture")}
               </label>
               <input
                 type="url"
@@ -123,19 +126,19 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
                 placeholder="https://example.com/image.jpg"
               />
               <p className="mt-1 text-sm text-gray-500">
-                {t('auth.profilePictureHint')}
+                {t("auth.profilePictureHint")}
               </p>
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t('auth.username')}
+              {t("auth.username")}
             </label>
             <input
               type="text"
               required
               pattern="[a-zA-Z0-9_-]+"
-              title={t('auth.usernameRequirements')}
+              title={t("auth.usernameRequirements")}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
               value={formData.username}
               onChange={(e) =>
@@ -145,12 +148,12 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t('auth.password')}
+              {t("auth.password")}
             </label>
             <input
               type="password"
               required
-              minLength={6}
+              minLength={!isLogin ? 6 : undefined}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
               value={formData.password}
               onChange={(e) =>
@@ -163,16 +166,20 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
             disabled={loading}
             className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
           >
-            {loading ? t('auth.loading') : isLogin ? t('auth.signIn') : t('auth.signUp')}
+            {loading
+              ? t("auth.loading")
+              : isLogin
+              ? t("auth.signIn")
+              : t("auth.signUp")}
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          {isLogin ? t('auth.noAccount') : t('auth.haveAccount')}{' '}
+          {isLogin ? t("auth.noAccount") : t("auth.haveAccount")}{" "}
           <button
             onClick={() => setIsLogin(!isLogin)}
             className="text-red-600 hover:text-red-500"
           >
-            {isLogin ? t('auth.signUp') : t('auth.signIn')}
+            {isLogin ? t("auth.signUp") : t("auth.signIn")}
           </button>
         </p>
       </div>

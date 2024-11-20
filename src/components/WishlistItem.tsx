@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import { WishlistItem as WishlistItemType, User } from '../types';
-import { Trash2Icon, LinkIcon, PencilIcon, XIcon, CheckIcon } from 'lucide-react';
-import UserAvatar from './UserAvatar';
-import { supabase } from '../lib/supabase';
-import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
+//V
+import React, { useState } from "react";
+import { WishlistItem as WishlistItemType, User } from "../types";
+import {
+  Trash2Icon,
+  LinkIcon,
+  PencilIcon,
+  XIcon,
+  CheckIcon,
+  StarIcon,
+} from "lucide-react";
+import UserAvatar from "./UserAvatar";
+import { supabase } from "../lib/supabase";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface WishlistItemProps {
   item: WishlistItemType;
@@ -15,20 +23,26 @@ interface WishlistItemProps {
 }
 
 const priorityColors = {
-  low: 'bg-blue-100 text-blue-800',
-  medium: 'bg-yellow-100 text-yellow-800',
-  high: 'bg-red-100 text-red-800',
+  low: "bg-blue-100",
+  medium: "bg-yellow-100",
+  high: "bg-red-100",
 };
 
-export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }: WishlistItemProps) {
+export default function WishlistItem({
+  item,
+  user,
+  canEdit,
+  onDelete,
+  onUpdate,
+}: WishlistItemProps) {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: item.title,
-    description: item.description || '',
+    description: item.description || "",
     price: item.price.toString(),
-    link: item.link || '',
+    link: item.link || "",
     priority: item.priority,
   });
 
@@ -38,7 +52,7 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
 
     try {
       const { error } = await supabase
-        .from('wishlist_items')
+        .from("wishlist_items")
         .update({
           title: formData.title,
           description: formData.description,
@@ -46,15 +60,15 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
           link: formData.link,
           priority: formData.priority,
         })
-        .eq('id', item.id);
+        .eq("id", item.id);
 
       if (error) throw error;
 
-      toast.success(t('messages.itemUpdated'));
+      toast.success(t("messages.itemUpdated"));
       setIsEditing(false);
       onUpdate();
     } catch (error: any) {
-      toast.error(t('messages.error'));
+      toast.error(t("messages.error"));
     } finally {
       setLoading(false);
     }
@@ -62,11 +76,14 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
 
   if (isEditing) {
     return (
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-lg shadow-md p-6"
+      >
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t('wishlist.title')} *
+              {t("wishlist.title")} *
             </label>
             <input
               type="text"
@@ -80,7 +97,7 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t('wishlist.description')}
+              {t("wishlist.description")}
             </label>
             <textarea
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
@@ -92,7 +109,7 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t('wishlist.price')} *
+              {t("wishlist.price")} *
             </label>
             <input
               type="number"
@@ -108,7 +125,7 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t('wishlist.link')}
+              {t("wishlist.link")}
             </label>
             <input
               type="url"
@@ -121,7 +138,7 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t('wishlist.priority')}
+              {t("wishlist.priority")}
             </label>
             <select
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
@@ -129,13 +146,13 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  priority: e.target.value as 'low' | 'medium' | 'high',
+                  priority: e.target.value as "low" | "medium" | "high",
                 })
               }
             >
-              <option value="low">{t('wishlist.priorities.low')}</option>
-              <option value="medium">{t('wishlist.priorities.medium')}</option>
-              <option value="high">{t('wishlist.priorities.high')}</option>
+              <option value="low">{t("wishlist.priorities.low")}</option>
+              <option value="medium">{t("wishlist.priorities.medium")}</option>
+              <option value="high">{t("wishlist.priorities.high")}</option>
             </select>
           </div>
         </div>
@@ -146,7 +163,7 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
             className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
             <XIcon className="h-4 w-4 mr-2" />
-            {t('wishlist.actions.cancel')}
+            {t("wishlist.actions.cancel")}
           </button>
           <button
             type="submit"
@@ -154,7 +171,9 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
           >
             <CheckIcon className="h-4 w-4 mr-2" />
-            {loading ? t('wishlist.actions.saving') : t('wishlist.actions.save')}
+            {loading
+              ? t("wishlist.actions.saving")
+              : t("wishlist.actions.save")}
           </button>
         </div>
       </form>
@@ -162,12 +181,29 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 transition-transform hover:scale-[1.02]">
+    <div
+      className={`rounded-lg shadow-md p-6 transition-transform hover:scale-[1.02] ${
+        priorityColors[item.priority]
+      }`}
+    >
       <div className="flex justify-between items-start">
         <div className="flex-1">
-          <div className="flex items-center space-x-3 mb-2">
-            {user && <UserAvatar user={user} size="sm" />}
-            <h3 className="text-xl font-semibold text-gray-800">{item.title}</h3>
+          {user && (
+            <div className="flex items-center space-x-3 mb-2">
+              <UserAvatar user={user} size="sm" />
+              <span className="text-md text-gray-600 ml-2">
+                {user.username}
+                {t("wishlist.possessiveWish")}
+              </span>
+            </div>
+          )}
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-semibold text-gray-800">
+              {item.title}
+            </h3>
+            {item.priority === "high" && (
+              <StarIcon className="h-5 w-5 text-red-500 fill-red-500" />
+            )}
           </div>
           {item.description && (
             <p className="text-gray-600 mt-2">{item.description}</p>
@@ -175,13 +211,6 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
           <div className="flex items-center gap-4 mt-4">
             <span className="text-lg font-medium text-green-600">
               ${item.price.toFixed(2)}
-            </span>
-            <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${
-                priorityColors[item.priority]
-              }`}
-            >
-              {t(`wishlist.priorities.${item.priority}`)}
             </span>
           </div>
         </div>
@@ -201,14 +230,14 @@ export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }
               <button
                 onClick={() => setIsEditing(true)}
                 className="text-blue-500 hover:text-blue-700"
-                title={t('wishlist.actions.edit')}
+                title={t("wishlist.actions.edit")}
               >
                 <PencilIcon className="h-5 w-5" />
               </button>
               <button
                 onClick={() => onDelete(item.id)}
                 className="text-red-500 hover:text-red-700"
-                title={t('wishlist.actions.delete')}
+                title={t("wishlist.actions.delete")}
               >
                 <Trash2Icon className="h-5 w-5" />
               </button>
