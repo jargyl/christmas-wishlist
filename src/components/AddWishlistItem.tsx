@@ -20,7 +20,7 @@ export default function AddWishlistItem({
     description: "",
     price: "",
     link: "",
-    priority: "medium",
+    is_priority: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,7 +35,7 @@ export default function AddWishlistItem({
           description: formData.description,
           price: parseFloat(formData.price),
           link: formData.link,
-          priority: formData.priority,
+          is_priority: formData.is_priority,
         },
       ]);
 
@@ -47,7 +47,7 @@ export default function AddWishlistItem({
         description: "",
         price: "",
         link: "",
-        priority: "medium",
+        is_priority: false,
       });
       setIsOpen(false);
       onAdd();
@@ -128,26 +128,22 @@ export default function AddWishlistItem({
                 }
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="is_priority"
+                checked={formData.is_priority}
+                onChange={(e) =>
+                  setFormData({ ...formData, is_priority: e.target.checked })
+                }
+                className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+              />
+              <label
+                htmlFor="is_priority"
+                className="text-sm font-medium text-gray-700"
+              >
                 {t("wishlist.priority")}
               </label>
-              <select
-                className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
-                value={formData.priority}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    priority: e.target.value as "low" | "medium" | "high",
-                  })
-                }
-              >
-                <option value="low">{t("wishlist.priorities.low")}</option>
-                <option value="medium">
-                  {t("wishlist.priorities.medium")}
-                </option>
-                <option value="high">{t("wishlist.priorities.high")}</option>
-              </select>
             </div>
           </div>
           <div className="mt-6 flex justify-end space-x-4">

@@ -22,20 +22,15 @@
   },
   "wishlist": {
     "possessiveWish": "'s Wens",
-    "sort": {
-      "price": "Sorteer op Prijs",
-      "priority": "Sorteer op Prioriteit"
-    },
     "addWish": "Nieuwe Wens Toevoegen",
     "title": "Titel",
     "description": "Beschrijving",
     "price": "Prijs",
     "link": "Link",
-    "priority": "Prioriteit",
-    "priorities": {
-      "low": "Laag",
-      "medium": "Gemiddeld",
-      "high": "Hoog"
+    "priority": "Markeer als Prioriteit",
+    "sort": {
+      "price": "Sorteer op Prijs",
+      "priority": "Sorteer op Prioriteit"
     },
     "actions": {
       "save": "Wijzigingen Opslaan",
@@ -68,7 +63,7 @@
         "before": "Klik op het",
         "after": "symbool om producten online te bekijken"
       },
-      "priority": "Hoge prioriteit items zijn gemarkeerd met een ster"
+      "priority": "Prioriteit items zijn gemarkeerd met een ster"
     }
   },
   "welcome": {

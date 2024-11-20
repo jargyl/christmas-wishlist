@@ -22,20 +22,15 @@
   },
   "wishlist": {
     "possessiveWish": "'s Wish",
-    "sort": {
-      "price": "Sort by Price",
-      "priority": "Sort by Priority"
-    },
     "addWish": "Add New Wish",
     "title": "Title",
     "description": "Description",
     "price": "Price",
     "link": "Link",
-    "priority": "Priority",
-    "priorities": {
-      "low": "Low",
-      "medium": "Medium",
-      "high": "High"
+    "priority": "Mark as Priority",
+    "sort": {
+      "price": "Sort by Price",
+      "priority": "Sort by Priority"
     },
     "actions": {
       "save": "Save Changes",
@@ -68,7 +63,7 @@
         "after": "symbol to view products online"
       },
       "switchLists": "Click on a user's avatar to view their wishlist",
-      "priority": "High priority items are marked with a star"
+      "priority": "Priority items are marked with a star"
     }
   },
   "welcome": {

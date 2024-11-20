@@ -86,12 +86,6 @@ export default function App() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
-    setSession(null);
-    setUsers([]);
-    setItems([]);
-    setSelectedUser(null);
-
-    localStorage.clear();
   };
 
   const sortItems = (items: WishlistItem[]) => {
@@ -99,8 +93,7 @@ export default function App() {
       if (sortBy === "price") {
         return b.price - a.price;
       } else {
-        const priorityOrder = { high: 3, medium: 2, low: 1 };
-        return priorityOrder[b.priority] - priorityOrder[a.priority];
+        return Number(b.is_priority) - Number(a.is_priority);
       }
     });
   };
@@ -205,9 +198,7 @@ export default function App() {
                 {users.map((user) => (
                   <Tooltip
                     key={user.id}
-                    text={t("help.viewUserTooltip", {
-                      username: user.username,
-                    })}
+                    text={t("help.viewUserTooltip", { username: user.username })}
                     position="bottom"
                   >
                     <button
@@ -233,9 +224,7 @@ export default function App() {
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
                   className="border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
-                  <option value="priority">
-                    {t("wishlist.sort.priority")}
-                  </option>
+                  <option value="priority">{t("wishlist.sort.priority")}</option>
                   <option value="price">{t("wishlist.sort.price")}</option>
                 </select>
               </div>

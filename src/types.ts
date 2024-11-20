@@ -5,12 +5,6 @@ export interface WishlistItem {
   description?: string;
   price: number;
   link?: string;
-  priority: 'low' | 'medium' | 'high';
+  is_priority: boolean;
   created_at: string;
-}
-
-export interface User {
-  id: string;
-  username: string;
-  avatar_url?: string;
 }

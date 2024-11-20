@@ -21,12 +21,6 @@ interface WishlistItemProps {
   onUpdate: () => void;
 }
 
-const priorityColors = {
-  low: "bg-blue-100",
-  medium: "bg-yellow-100",
-  high: "bg-red-100",
-};
-
 export default function WishlistItem({
   item,
   user,
@@ -38,11 +32,11 @@ export default function WishlistItem({
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    title: item.title,
+    title: item.title || "",
     description: item.description || "",
-    price: item.price.toString(),
+    price: item.price ? item.price.toString() : "",
     link: item.link || "",
-    priority: item.priority,
+    is_priority: Boolean(item.is_priority),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,10 +48,10 @@ export default function WishlistItem({
         .from("wishlist_items")
         .update({
           title: formData.title,
-          description: formData.description,
-          price: parseFloat(formData.price),
-          link: formData.link,
-          priority: formData.priority,
+          description: formData.description || null,
+          price: formData.price ? parseFloat(formData.price) : 0,
+          link: formData.link || null,
+          is_priority: formData.is_priority,
         })
         .eq("id", item.id);
 
@@ -135,24 +129,22 @@ export default function WishlistItem({
               }
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="is_priority"
+              checked={formData.is_priority}
+              onChange={(e) =>
+                setFormData({ ...formData, is_priority: e.target.checked })
+              }
+              className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+            />
+            <label
+              htmlFor="is_priority"
+              className="text-sm font-medium text-gray-700"
+            >
               {t("wishlist.priority")}
             </label>
-            <select
-              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
-              value={formData.priority}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  priority: e.target.value as "low" | "medium" | "high",
-                })
-              }
-            >
-              <option value="low">{t("wishlist.priorities.low")}</option>
-              <option value="medium">{t("wishlist.priorities.medium")}</option>
-              <option value="high">{t("wishlist.priorities.high")}</option>
-            </select>
           </div>
         </div>
         <div className="mt-6 flex justify-end space-x-4">
@@ -170,9 +162,7 @@ export default function WishlistItem({
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
           >
             <CheckIcon className="h-4 w-4 mr-2" />
-            {loading
-              ? t("wishlist.actions.saving")
-              : t("wishlist.actions.save")}
+            {loading ? t("wishlist.actions.saving") : t("wishlist.actions.save")}
           </button>
         </div>
       </form>
@@ -180,11 +170,7 @@ export default function WishlistItem({
   }
 
   return (
-    <div
-      className={`p-4 rounded-lg shadow-md mb-4 ${
-        priorityColors[item.priority]
-      } transition-all hover:shadow-lg`}
-    >
+    <div className="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
       <div className="flex justify-between items-start">
         <div className="flex-1">
           {user && (
@@ -198,7 +184,7 @@ export default function WishlistItem({
           )}
           <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
             {item.title}
-            {item.priority === "high" && (
+            {item.is_priority && (
               <StarIcon className="w-4 h-4 text-red-500 fill-red-500" />
             )}
           </h3>
@@ -206,7 +192,7 @@ export default function WishlistItem({
             <p className="text-gray-600 mt-1">{item.description}</p>
           )}
           <p className="text-green-700 font-semibold mt-2">
-            €{item.price.toFixed(2)}
+            €{(item.price || 0).toFixed(2)}
           </p>
         </div>
         <div className="flex gap-2">
