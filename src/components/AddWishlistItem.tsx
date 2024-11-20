@@ -1,0 +1,159 @@
+import React, { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import toast from 'react-hot-toast';
+
+interface AddWishlistItemProps {
+  userId: string;
+  onAdd: () => void;
+}
+
+export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    price: '',
+    link: '',
+    priority: 'medium',
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.from('wishlist_items').insert([
+        {
+          user_id: userId,
+          title: formData.title,
+          description: formData.description,
+          price: parseFloat(formData.price),
+          link: formData.link,
+          priority: formData.priority,
+        },
+      ]);
+
+      if (error) throw error;
+
+      toast.success('Item added successfully!');
+      setFormData({
+        title: '',
+        description: '',
+        price: '',
+        link: '',
+        priority: 'medium',
+      });
+      setIsOpen(false);
+      onAdd();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="mb-8">
+      {!isOpen ? (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-full py-3 px-4 border-2 border-dashed border-red-300 rounded-lg text-red-600 hover:border-red-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Add New Wish
+        </button>
+      ) : (
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Title *
+              </label>
+              <input
+                type="text"
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <textarea
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Price *
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+                value={formData.price}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Link
+              </label>
+              <input
+                type="url"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+                value={formData.link}
+                onChange={(e) =>
+                  setFormData({ ...formData, link: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Priority
+              </label>
+              <select
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+                value={formData.priority}
+                onChange={(e) =>
+                  setFormData({ ...formData, priority: e.target.value })
+                }
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+          </div>
+          <div className="mt-6 flex justify-end space-x-4">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+            >
+              {loading ? 'Adding...' : 'Add Item'}
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}

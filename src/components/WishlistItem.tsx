@@ -1,0 +1,217 @@
+import React, { useState } from 'react';
+import { WishlistItem as WishlistItemType, User } from '../types';
+import { Trash2Icon, LinkIcon, PencilIcon, XIcon, CheckIcon } from 'lucide-react';
+import UserAvatar from './UserAvatar';
+import { supabase } from '../lib/supabase';
+import toast from 'react-hot-toast';
+
+interface WishlistItemProps {
+  item: WishlistItemType;
+  user?: User;
+  canEdit: boolean;
+  onDelete: (id: string) => void;
+  onUpdate: () => void;
+}
+
+const priorityColors = {
+  low: 'bg-blue-100 text-blue-800',
+  medium: 'bg-yellow-100 text-yellow-800',
+  high: 'bg-red-100 text-red-800',
+};
+
+export default function WishlistItem({ item, user, canEdit, onDelete, onUpdate }: WishlistItemProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    title: item.title,
+    description: item.description || '',
+    price: item.price.toString(),
+    link: item.link || '',
+    priority: item.priority,
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase
+        .from('wishlist_items')
+        .update({
+          title: formData.title,
+          description: formData.description,
+          price: parseFloat(formData.price),
+          link: formData.link,
+          priority: formData.priority,
+        })
+        .eq('id', item.id);
+
+      if (error) throw error;
+
+      toast.success('Item updated successfully!');
+      setIsEditing(false);
+      onUpdate();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (isEditing) {
+    return (
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Title *
+            </label>
+            <input
+              type="text"
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Price *
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              required
+              min="0"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              value={formData.price}
+              onChange={(e) =>
+                setFormData({ ...formData, price: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Link
+            </label>
+            <input
+              type="url"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              value={formData.link}
+              onChange={(e) =>
+                setFormData({ ...formData, link: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Priority
+            </label>
+            <select
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              value={formData.priority}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  priority: e.target.value as 'low' | 'medium' | 'high',
+                })
+              }
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end space-x-4">
+          <button
+            type="button"
+            onClick={() => setIsEditing(false)}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            <XIcon className="h-4 w-4 mr-2" />
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+          >
+            <CheckIcon className="h-4 w-4 mr-2" />
+            {loading ? 'Saving...' : 'Save Changes'}
+          </button>
+        </div>
+      </form>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 transition-transform hover:scale-[1.02]">
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <div className="flex items-center space-x-3 mb-2">
+            {user && <UserAvatar user={user} size="sm" />}
+            <h3 className="text-xl font-semibold text-gray-800">{item.title}</h3>
+          </div>
+          {item.description && (
+            <p className="text-gray-600 mt-2">{item.description}</p>
+          )}
+          <div className="flex items-center gap-4 mt-4">
+            <span className="text-lg font-medium text-green-600">
+              ${item.price.toFixed(2)}
+            </span>
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                priorityColors[item.priority]
+              }`}
+            >
+              {item.priority.charAt(0).toUpperCase() + item.priority.slice(1)}
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          {item.link && (
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <LinkIcon className="h-5 w-5" />
+            </a>
+          )}
+          {canEdit && (
+            <>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                <PencilIcon className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => onDelete(item.id)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <Trash2Icon className="h-5 w-5" />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
