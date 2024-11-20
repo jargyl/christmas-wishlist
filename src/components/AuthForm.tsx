@@ -105,14 +105,12 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed flex items-center justify-center p-4 relative">
       <Toaster position="top-right" />
+      <div className="absolute top-4 right-4">
+        <LanguageSelector />
+      </div>
       <div className="max-w-sm w-full bg-white rounded-xl shadow-lg p-8">
-        <div className="flex justify-center mb-6">
-          <Tooltip text={t("help.language")} position="top">
-            <LanguageSelector />
-          </Tooltip>
-        </div>
         <div className="flex items-center justify-center gap-2 mb-8">
           <GiftIcon className="w-8 h-8 text-red-600" />
           <h1 className="text-3xl font-bold text-gray-800">{t("app.title")}</h1>

@@ -46,6 +46,12 @@
       "delete": "Verwijderen",
       "edit": "Bewerken"
     },
+    "delete": {
+      "confirmTitle": "Wens Verwijderen",
+      "confirmMessage": "Weet je zeker dat je {{title}} wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "confirm": "Verwijderen",
+      "cancel": "Annuleren"
+    },
     "noWishes": "Geen wensen gevonden. Voeg wat wensen toe om te beginnen!",
     "required": "Verplicht"
   },

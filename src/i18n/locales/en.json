@@ -46,6 +46,12 @@
       "delete": "Delete",
       "edit": "Edit"
     },
+    "delete": {
+      "confirmTitle": "Delete Wish",
+      "confirmMessage": "Are you sure you want to delete {{title}}? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
     "noWishes": "No wishes found. Add some wishes to get started!",
     "required": "Required"
   },

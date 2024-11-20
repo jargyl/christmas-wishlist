@@ -13,7 +13,7 @@ export default function LanguageSelector() {
   return (
     <button
       onClick={toggleLanguage}
-      className="flex items-center space-x-1 text-gray-600 hover:text-gray-900"
+      className="flex items-center space-x-1 text-gray-600 bg-white hover:text-gray-900 border border-gray-300 rounded-md px-2 py-1"
       title={i18n.language === "en" ? "Switch to Dutch" : "Schakel naar Engels"}
     >
       <GlobeIcon className="h-5 w-5" />

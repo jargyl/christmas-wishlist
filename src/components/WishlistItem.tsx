@@ -12,6 +12,8 @@ import UserAvatar from "./UserAvatar";
 import { supabase } from "../lib/supabase";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import Switch from "react-switch";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 interface WishlistItemProps {
   item: WishlistItemType;
@@ -31,6 +33,7 @@ export default function WishlistItem({
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [formData, setFormData] = useState({
     title: item.title || "",
     description: item.description || "",
@@ -49,7 +52,7 @@ export default function WishlistItem({
         .update({
           title: formData.title,
           description: formData.description || null,
-          price: formData.price ? parseFloat(formData.price) : 0,
+          price: formData.price ? parseFloat(formData.price) : null,
           link: formData.link || null,
           is_priority: formData.is_priority,
         })
@@ -67,6 +70,11 @@ export default function WishlistItem({
     }
   };
 
+  const handleDeleteConfirm = () => {
+    onDelete(item.id);
+    setShowDeleteModal(false);
+  };
+
   if (isEditing) {
     return (
       <form
@@ -76,7 +84,7 @@ export default function WishlistItem({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.title")}
+              {t("wishlist.title")} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -102,12 +110,11 @@ export default function WishlistItem({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.price")} in €
+              {t("wishlist.price")} in € ({t("wishlist.validation.optional")})
             </label>
             <input
               type="number"
               step="0.01"
-              required
               min="0"
               className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.price}
@@ -130,19 +137,20 @@ export default function WishlistItem({
             />
           </div>
           <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="is_priority"
+            <Switch
               checked={formData.is_priority}
-              onChange={(e) =>
-                setFormData({ ...formData, is_priority: e.target.checked })
+              onChange={(checked) =>
+                setFormData({ ...formData, is_priority: checked })
               }
-              className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+              onColor="#dc2626"
+              offColor="#d1d5db"
+              checkedIcon={false}
+              uncheckedIcon={false}
+              height={24}
+              width={48}
+              handleDiameter={20}
             />
-            <label
-              htmlFor="is_priority"
-              className="text-sm font-medium text-gray-700"
-            >
+            <label className="text-sm font-medium text-gray-700">
               {t("wishlist.priority")}
             </label>
           </div>
@@ -172,62 +180,72 @@ export default function WishlistItem({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
-      <div className="flex justify-between items-start">
-        <div className="flex-1">
-          {user && (
-            <div className="flex items-center gap-2 mb-1">
-              <UserAvatar user={user} size="sm" />
-              <span className="text-sm text-gray-600">
-                {user.username}
-                {t("wishlist.possessiveWish")}
-              </span>
-            </div>
-          )}
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            {item.title}
-            {item.is_priority && (
-              <StarIcon className="w-4 h-4 text-red-500 fill-red-500" />
+    <>
+      <div className="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            {user && (
+              <div className="flex items-center gap-2 mb-1">
+                <UserAvatar user={user} size="sm" />
+                <span className="text-sm text-gray-600">
+                  {user.username}
+                  {t("wishlist.possessiveWish")}
+                </span>
+              </div>
             )}
-          </h3>
-          {item.description && (
-            <p className="text-gray-600 mt-1">{item.description}</p>
-          )}
-          <p className="text-green-700 font-semibold mt-2">
-            €{(item.price || 0).toFixed(2)}
-          </p>
-        </div>
-        <div className="flex gap-2">
-          {item.link && (
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
-            >
-              <ExternalLinkIcon className="w-5 h-5" />
-            </a>
-          )}
-          {canEdit && (
-            <>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
-                title={t("wishlist.actions.edit")}
+            <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+              {item.title}
+              {item.is_priority && (
+                <StarIcon className="w-4 h-4 text-red-500 fill-red-500" />
+              )}
+            </h3>
+            {item.description && (
+              <p className="text-gray-600 mt-1">{item.description}</p>
+            )}
+            {item.price && (
+              <p className="text-green-700 font-semibold mt-2">
+                €{item.price.toFixed(2)}
+              </p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            {item.link && (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
               >
-                <EditIcon className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => onDelete(item.id)}
-                className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
-                title={t("wishlist.actions.delete")}
-              >
-                <Trash2Icon className="w-5 h-5" />
-              </button>
-            </>
-          )}
+                <ExternalLinkIcon className="w-5 h-5" />
+              </a>
+            )}
+            {canEdit && (
+              <>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                  title={t("wishlist.actions.edit")}
+                >
+                  <EditIcon className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setShowDeleteModal(true)}
+                  className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
+                  title={t("wishlist.actions.delete")}
+                >
+                  <Trash2Icon className="w-5 h-5" />
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteConfirm}
+        itemTitle={item.title}
+      />
+    </>
   );
 }

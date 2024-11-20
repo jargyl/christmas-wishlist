@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { supabase } from "../lib/supabase";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import Switch from "react-switch";
 
 interface AddWishlistItemProps {
   userId: string;
@@ -32,9 +33,9 @@ export default function AddWishlistItem({
         {
           user_id: userId,
           title: formData.title,
-          description: formData.description,
-          price: parseFloat(formData.price),
-          link: formData.link,
+          description: formData.description || null,
+          price: formData.price ? parseFloat(formData.price) : null,
+          link: formData.link || null,
           is_priority: formData.is_priority,
         },
       ]);
@@ -75,7 +76,7 @@ export default function AddWishlistItem({
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t("wishlist.title")}
+                {t("wishlist.title")} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -102,12 +103,11 @@ export default function AddWishlistItem({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t("wishlist.price")} in €
+                {t("wishlist.price")} in € ({t("wishlist.validation.optional")})
               </label>
               <input
                 type="number"
                 step="0.01"
-                required
                 min="0"
                 className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
                 value={formData.price}
@@ -130,19 +130,20 @@ export default function AddWishlistItem({
               />
             </div>
             <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="is_priority"
+              <Switch
                 checked={formData.is_priority}
-                onChange={(e) =>
-                  setFormData({ ...formData, is_priority: e.target.checked })
+                onChange={(checked) =>
+                  setFormData({ ...formData, is_priority: checked })
                 }
-                className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+                onColor="#dc2626"
+                offColor="#d1d5db"
+                checkedIcon={false}
+                uncheckedIcon={false}
+                height={24}
+                width={48}
+                handleDiameter={20}
               />
-              <label
-                htmlFor="is_priority"
-                className="text-sm font-medium text-gray-700"
-              >
+              <label className="text-sm font-medium text-gray-700">
                 {t("wishlist.priority")}
               </label>
             </div>
