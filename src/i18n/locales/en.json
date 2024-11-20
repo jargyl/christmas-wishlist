@@ -22,7 +22,7 @@
     "invalidCredentials": "Invalid login credentials"
   },
   "wishlist": {
-    "possessiveWish": "'s Wish",
+    "possessiveWish": "Wish from {{username}}",
     "addWish": "Add New Wish",
     "title": "Title",
     "description": "Description",
@@ -34,8 +34,9 @@
       "optional": "Optional"
     },
     "sort": {
-      "price": "Sort by Price",
-      "priority": "Sort by Priority"
+      "sortBy": "Sort by",
+      "price": "Price",
+      "priority": "Priority"
     },
     "actions": {
       "save": "Save Changes",

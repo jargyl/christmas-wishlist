@@ -13,7 +13,8 @@ import {
   LogOutIcon,
   HelpCircleIcon,
   ExternalLinkIcon,
-  ArrowUpDownIcon,
+  ArrowUpIcon,
+  StarIcon,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -143,7 +144,7 @@ export default function App() {
               )}
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                className="flex items-center gap-1 text-gray-600 bg-white hover:text-gray-900 border border-gray-300 rounded-md px-2 py-1"
               >
                 <LogOutIcon className="w-5 h-5" />
                 {t("auth.signOut")}
@@ -172,7 +173,12 @@ export default function App() {
                           {t("help.tips.clickLinks.after")}
                         </span>
                       </li>
-                      <li>{t("help.tips.priority")}</li>
+                      <li>
+                        <span className="inline-flex items-center">
+                          {t("help.tips.priority")}
+                          <StarIcon className="w-4 h-4 mx-1 text-blue-800 " />
+                        </span>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -198,7 +204,9 @@ export default function App() {
                 {users.map((user) => (
                   <Tooltip
                     key={user.id}
-                    text={t("help.viewUserTooltip", { username: user.username })}
+                    text={t("help.viewUserTooltip", {
+                      username: user.username,
+                    })}
                     position="bottom"
                   >
                     <button
@@ -217,17 +225,21 @@ export default function App() {
                   </Tooltip>
                 ))}
               </div>
-              <div className="flex items-center gap-2">
-                <ArrowUpDownIcon className="w-5 h-5 text-gray-500" />
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                >
-                  <option value="priority">{t("wishlist.sort.priority")}</option>
-                  <option value="price">{t("wishlist.sort.price")}</option>
-                </select>
-              </div>
+              <Tooltip text={t("wishlist.sort.sortBy")} position="bottom">
+                <div className="flex items-center gap-2">
+                  <ArrowUpIcon className="w-5 h-5 text-gray-500" />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as SortOption)}
+                    className="border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    <option value="priority">
+                      {t("wishlist.sort.priority")}
+                    </option>
+                    <option value="price">{t("wishlist.sort.price")}</option>
+                  </select>
+                </div>
+              </Tooltip>
             </div>
 
             {(!selectedUser || selectedUser === session.user.id) && (

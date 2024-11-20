@@ -90,8 +90,7 @@ export default function AddWishlistItem({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t("wishlist.description")} ({t("wishlist.validation.optional")}
-                )
+                {t("wishlist.description")}
               </label>
               <textarea
                 className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
@@ -103,7 +102,7 @@ export default function AddWishlistItem({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t("wishlist.price")} in € ({t("wishlist.validation.optional")})
+                {t("wishlist.price")} in €
               </label>
               <input
                 type="number"
@@ -118,7 +117,7 @@ export default function AddWishlistItem({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {t("wishlist.link")} ({t("wishlist.validation.optional")})
+                {t("wishlist.link")}
               </label>
               <input
                 type="url"

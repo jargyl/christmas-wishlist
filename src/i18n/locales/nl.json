@@ -22,7 +22,7 @@
     "invalidCredentials": "Ongeldige inloggegevens"
   },
   "wishlist": {
-    "possessiveWish": "'s Wens",
+    "possessiveWish": "Wens van {{username}}",
     "addWish": "Nieuwe Wens Toevoegen",
     "title": "Titel",
     "description": "Beschrijving",
@@ -34,8 +34,9 @@
       "optional": "Optioneel"
     },
     "sort": {
-      "price": "Sorteer op Prijs",
-      "priority": "Sorteer op Prioriteit"
+      "sortBy": "Sorteer op",
+      "price": "Prijs",
+      "priority": "Prioriteit"
     },
     "actions": {
       "save": "Wijzigingen Opslaan",

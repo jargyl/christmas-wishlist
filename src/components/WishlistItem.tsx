@@ -98,7 +98,7 @@ export default function WishlistItem({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.description")} ({t("wishlist.validation.optional")})
+              {t("wishlist.description")}
             </label>
             <textarea
               className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
@@ -110,7 +110,7 @@ export default function WishlistItem({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.price")} in € ({t("wishlist.validation.optional")})
+              {t("wishlist.price")} in €
             </label>
             <input
               type="number"
@@ -125,7 +125,7 @@ export default function WishlistItem({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              {t("wishlist.link")} ({t("wishlist.validation.optional")})
+              {t("wishlist.link")}
             </label>
             <input
               type="url"
@@ -188,8 +188,7 @@ export default function WishlistItem({
               <div className="flex items-center gap-2 mb-1">
                 <UserAvatar user={user} size="sm" />
                 <span className="text-sm text-gray-600">
-                  {user.username}
-                  {t("wishlist.possessiveWish")}
+                  {t("wishlist.possessiveWish", { username: user.username })}
                 </span>
               </div>
             )}
