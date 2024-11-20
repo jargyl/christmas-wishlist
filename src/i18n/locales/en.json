@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Family Wishlist",
-    "allWishlists": "All Wishlists"
+    "allWishlists": "All Wishes"
   },
   "auth": {
     "signIn": "Sign In",
@@ -50,5 +50,36 @@
     "itemUpdated": "Item updated successfully!",
     "itemDeleted": "Item deleted successfully!",
     "error": "An error occurred"
+  },
+  "help": {
+    "tooltip": "Need help? Click for tips",
+    "language": "Change language to Dutch",
+    "viewAllTooltip": "View everyone's wishes",
+    "viewUserTooltip": "View {{username}}'s wishes",
+    "quickTips": "Quick Tips",
+    "tips": {
+      "addWish": "Click the Add New Wish button to create your wishlist",
+      "clickLinks": {
+        "before": "Click on the",
+        "after": "symbol to view products online"
+      },
+      "switchLists": "Click on a user's avatar to view their wishlist",
+      "priority": "High priority items are marked with a star"
+    }
+  },
+  "welcome": {
+    "getStarted": "Get Started",
+    "createList": {
+      "title": "Create Your Wishlist",
+      "description": "Add items you'd love to receive. Include details like price and priority."
+    },
+    "viewLists": {
+      "title": "View Family Wishlists",
+      "description": "Browse through your family members' wishlists to find the perfect gift."
+    },
+    "shopping": {
+      "title": "Easy Shopping",
+      "description": "Click on item links to go directly to where they can be purchased."
+    }
   }
 }

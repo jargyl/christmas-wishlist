@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Familie Kerstlijst",
-    "allWishlists": "Alle Verlanglijstjes"
+    "allWishlists": "Alle Wensen"
   },
   "auth": {
     "signIn": "Inloggen",
@@ -50,5 +50,36 @@
     "itemUpdated": "Item succesvol bijgewerkt!",
     "itemDeleted": "Item succesvol verwijderd!",
     "error": "Er is een fout opgetreden"
+  },
+  "help": {
+    "tooltip": "Hulp nodig? Klik voor tips",
+    "language": "Verander taal naar Engels",
+    "viewAllTooltip": "Bekijk alle wensen",
+    "viewUserTooltip": "Bekijk de wensen van {{username}}",
+    "quickTips": "Snelle Tips",
+    "tips": {
+      "addWish": "Klik op \"Nieuwe Wens Toevoegen\" om je verlanglijst te maken",
+      "switchLists": "Gebruik de knoppen hieronder om tussen familieleden te wisselen",
+      "clickLinks": {
+        "before": "Klik op het",
+        "after": "symbool om producten online te bekijken"
+      },
+      "priority": "Hoge prioriteit items zijn gemarkeerd met een ster"
+    }
+  },
+  "welcome": {
+    "getStarted": "Aan de Slag",
+    "createList": {
+      "title": "Maak Je Verlanglijst",
+      "description": "Voeg items toe die je graag zou willen ontvangen. Inclusief details zoals prijs en prioriteit."
+    },
+    "viewLists": {
+      "title": "Bekijk Familie Verlanglijsten",
+      "description": "Blader door de verlanglijsten van je familieleden om het perfecte cadeau te vinden."
+    },
+    "shopping": {
+      "title": "Eenvoudig Winkelen",
+      "description": "Klik op item links om direct naar de webshop te gaan waar ze gekocht kunnen worden."
+    }
   }
 }

@@ -6,7 +6,14 @@ import WishlistItemComponent from "./components/WishlistItem";
 import AddWishlistItem from "./components/AddWishlistItem";
 import UserAvatar from "./components/UserAvatar";
 import LanguageSelector from "./components/LanguageSelector";
-import { GiftIcon, LogOutIcon } from "lucide-react";
+import WelcomeModal from "./components/WelcomeModal";
+import Tooltip from "./components/Tooltip";
+import {
+  GiftIcon,
+  LogOutIcon,
+  HelpCircleIcon,
+  ExternalLinkIcon,
+} from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
@@ -16,6 +23,7 @@ export default function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -90,6 +98,7 @@ export default function App() {
       <div className="min-h-screen bg-white/90 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto p-6">
           <Toaster position="top-right" />
+          <WelcomeModal />
 
           <header className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-2">
@@ -99,7 +108,18 @@ export default function App() {
               </h1>
             </div>
             <div className="flex items-center gap-4">
-              <LanguageSelector />
+              <Tooltip text={t("help.tooltip")} position="bottom">
+                <button
+                  onClick={() => setShowHelp(!showHelp)}
+                  className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  aria-label={t("help.tooltip")}
+                >
+                  <HelpCircleIcon className="w-6 h-6" />
+                </button>
+              </Tooltip>
+              <Tooltip text={t("help.language")} position="bottom">
+                <LanguageSelector />
+              </Tooltip>
               {currentUser && (
                 <div className="flex items-center gap-2">
                   <UserAvatar user={currentUser} size="md" />
@@ -116,54 +136,92 @@ export default function App() {
             </div>
           </header>
 
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <div className="flex flex-wrap gap-4 mb-6">
-              <button
-                onClick={() => setSelectedUser(null)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                  !selectedUser
-                    ? "bg-red-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {t("app.allWishlists")}
-              </button>
-              {users.map((user) => (
+          <div className="bg-white rounded-lg shadow-lg p-6 h-[80vh] flex flex-col">
+            {showHelp && (
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <HelpCircleIcon className="h-5 w-5 text-blue-400" />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-blue-800">
+                      {t("help.quickTips")}
+                    </h3>
+                    <ul className="mt-2 text-sm text-blue-700 list-disc list-inside">
+                      <li>{t("help.tips.addWish")}</li>
+                      <li>{t("help.tips.switchLists")}</li>
+                      <li>
+                        <span className="inline-flex items-center">
+                          {t("help.tips.clickLinks.before")}
+                          <ExternalLinkIcon className="w-4 h-4 mx-1" />
+                          {t("help.tips.clickLinks.after")}
+                        </span>
+                      </li>
+                      <li>{t("help.tips.priority")}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-4 mb-6" role="tablist">
+              <Tooltip text={t("help.viewAllTooltip")} position="bottom">
                 <button
-                  key={user.id}
-                  onClick={() => setSelectedUser(user.id)}
+                  onClick={() => setSelectedUser(null)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                    selectedUser === user.id
+                    !selectedUser
                       ? "bg-red-600 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
+                  role="tab"
+                  aria-selected={!selectedUser}
                 >
-                  <UserAvatar user={user} size="sm" />
-                  <span>{user.username}</span>
+                  {t("app.allWishlists")}
                 </button>
+              </Tooltip>
+              {users.map((user) => (
+                <Tooltip
+                  key={user.id}
+                  text={t("help.viewUserTooltip", { username: user.username })}
+                  position="bottom"
+                >
+                  <button
+                    onClick={() => setSelectedUser(user.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
+                      selectedUser === user.id
+                        ? "bg-red-600 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                    role="tab"
+                    aria-selected={selectedUser === user.id}
+                  >
+                    <UserAvatar user={user} size="sm" />
+                    <span>{user.username}</span>
+                  </button>
+                </Tooltip>
               ))}
             </div>
-
             {(!selectedUser || selectedUser === session.user.id) && (
               <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
             )}
-
-            <div className="space-y-4">
-              {filteredItems.map((item) => (
-                <WishlistItemComponent
-                  key={item.id}
-                  item={item}
-                  user={users.find((u) => u.id === item.user_id)}
-                  canEdit={item.user_id === session.user.id}
-                  onDelete={handleDelete}
-                  onUpdate={fetchItems}
-                />
-              ))}
-              {filteredItems.length === 0 && (
-                <p className="text-center text-gray-500 py-8">
-                  {t("wishlist.noWishes")}
-                </p>
-              )}
+            <div className="flex-1 overflow-y-auto scrollbar-custom">
+              <div className="space-y-4">
+                {filteredItems.map((item) => (
+                  <WishlistItemComponent
+                    key={item.id}
+                    item={item}
+                    user={users.find((u) => u.id === item.user_id)}
+                    canEdit={item.user_id === session.user.id}
+                    onDelete={handleDelete}
+                    onUpdate={fetchItems}
+                  />
+                ))}
+                {filteredItems.length === 0 && (
+                  <p className="text-center text-gray-500 py-8">
+                    {t("wishlist.noWishes")}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

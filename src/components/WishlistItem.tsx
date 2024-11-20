@@ -77,7 +77,7 @@ export default function WishlistItem({
     return (
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-lg shadow-md p-6"
+        className="bg-gray-50 rounded-lg shadow-md p-6 border border-gray-200"
       >
         <div className="space-y-4">
           <div>
@@ -87,7 +87,7 @@ export default function WishlistItem({
             <input
               type="text"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.title}
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
@@ -99,7 +99,7 @@ export default function WishlistItem({
               {t("wishlist.description")}
             </label>
             <textarea
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
@@ -115,7 +115,7 @@ export default function WishlistItem({
               step="0.01"
               required
               min="0"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.price}
               onChange={(e) =>
                 setFormData({ ...formData, price: e.target.value })
@@ -128,7 +128,7 @@ export default function WishlistItem({
             </label>
             <input
               type="url"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.link}
               onChange={(e) =>
                 setFormData({ ...formData, link: e.target.value })
@@ -140,7 +140,7 @@ export default function WishlistItem({
               {t("wishlist.priority")}
             </label>
             <select
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.priority}
               onChange={(e) =>
                 setFormData({

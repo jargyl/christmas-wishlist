@@ -116,7 +116,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
               </label>
               <input
                 type="url"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
                 value={formData.avatarUrl}
                 onChange={(e) =>
                   setFormData({ ...formData, avatarUrl: e.target.value })
@@ -137,7 +137,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
               required
               pattern="[a-zA-Z0-9_-]+"
               title={t("auth.usernameRequirements")}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.username}
               onChange={(e) =>
                 setFormData({ ...formData, username: e.target.value })
@@ -152,7 +152,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
               type="password"
               required
               minLength={!isLogin ? 6 : undefined}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
