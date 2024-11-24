@@ -5,7 +5,6 @@ import AuthForm from "./components/AuthForm";
 import WishlistItemComponent from "./components/WishlistItem";
 import AddWishlistItem from "./components/AddWishlistItem";
 import UserAvatar from "./components/UserAvatar";
-import LanguageSelector from "./components/LanguageSelector";
 import WelcomeModal from "./components/WelcomeModal";
 import Tooltip from "./components/Tooltip";
 import {
@@ -130,15 +129,12 @@ export default function App() {
                 </h1>
               </div>
               <div className="flex items-center gap-4">
-                <Tooltip text={t("help.language")} position="bottom">
-                  <LanguageSelector />
-                </Tooltip>
                 {currentUser && (
                   <button
                     onClick={() => handleUserSelect(currentUser.id)}
                     className="flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
                   >
-                    <UserAvatar user={currentUser} size="md" />
+                    <UserAvatar user={currentUser} size="sm" />
                     <span className="text-gray-700">
                       {currentUser.username}
                     </span>
@@ -222,9 +218,6 @@ export default function App() {
                   <HelpCircleIcon className="w-6 h-6" />
                 </button>
               </Tooltip>
-              <Tooltip text={t("help.language")} position="bottom">
-                <LanguageSelector />
-              </Tooltip>
               {currentUser && (
                 <button
                   onClick={() => {
@@ -233,7 +226,7 @@ export default function App() {
                   }}
                   className="flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
                 >
-                  <UserAvatar user={currentUser} size="md" />
+                  <UserAvatar user={currentUser} size="sm" />
                   <span className="text-gray-700">{currentUser.username}</span>
                 </button>
               )}
