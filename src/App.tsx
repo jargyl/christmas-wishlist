@@ -5,15 +5,11 @@ import AuthForm from "./components/AuthForm";
 import WishlistItemComponent from "./components/WishlistItem";
 import AddWishlistItem from "./components/AddWishlistItem";
 import UserAvatar from "./components/UserAvatar";
-import {
-  GiftIcon,
-  LogOutIcon,
-  UsersIcon,
-  ArrowLeftIcon,
-  HeartIcon,
-} from "lucide-react";
+import { UsersIcon, HeartIcon, ExternalLinkIcon } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import Dashboard from "./components/Dashboard";
+import { motion } from "framer-motion";
 
 export default function App() {
   const { t } = useTranslation();
@@ -22,8 +18,16 @@ export default function App() {
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [showUserSelection, setShowUserSelection] = useState(true);
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
 
   useEffect(() => {
+    const hasVisited = localStorage.getItem("hasVisited");
+    if (hasVisited) {
+      setIsFirstVisit(false);
+    } else {
+      localStorage.setItem("hasVisited", "true");
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session) {
@@ -96,156 +100,105 @@ export default function App() {
     ? items.filter((item) => item.user_id === selectedUser)
     : items;
 
+  if (!currentUser) return null;
+
   if (showUserSelection) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-100 to-gray-50">
-        <div className="max-w-6xl mx-auto p-4 sm:p-6">
-          <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-2">
-              <GiftIcon className="w-8 h-8 text-red-700" />
-              <h1 className="text-3xl font-bold text-gray-900">
-                {t("app.title")}
-              </h1>
-            </div>
-            <div className="flex items-center gap-3">
-              {currentUser && (
-                <button
-                  onClick={() => handleUserSelect(currentUser.id)}
-                  className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg transition-colors"
-                >
-                  <UserAvatar user={currentUser} size="sm" />
-                  <span className="text-gray-900">{currentUser.username}</span>
-                </button>
-              )}
-              <button
-                onClick={handleSignOut}
-                className="flex items-center gap-2 text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 transition-colors"
-              >
-                <LogOutIcon className="w-5 h-5" />
-                <span className="hidden sm:inline">{t("auth.signOut")}</span>
-              </button>
-            </div>
-          </header>
+      <Dashboard
+        user={currentUser}
+        onLogout={handleSignOut}
+        showTips={isFirstVisit}
+      >
+        <div className="space-y-8">
+          {/* Quick Actions */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => handleUserSelect(null)}
+              className="flex flex-col items-center gap-3 p-8 bg-primary/5 border-2 border-primary/20 rounded-lg hover:border-primary hover:bg-primary/10 transition-all"
+            >
+              <UsersIcon className="w-12 h-12 text-primary" />
+              <span className="font-medium text-primary">
+                {t("app.allWishlists")}
+              </span>
+            </motion.button>
 
-          <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6">
-            <div className="text-center mb-8">
-              <UsersIcon className="w-12 h-12 text-red-700 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                {t("app.chooseWishlist")}
-              </h2>
-              <p className="text-gray-700">
-                {t("app.selectWishlistDescription")}
-              </p>
-            </div>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => handleUserSelect(session.user.id)}
+              className="flex flex-col items-center gap-3 p-8 bg-primary/5 border-2 border-primary/20 rounded-lg hover:border-primary hover:bg-primary/10 transition-all"
+            >
+              <HeartIcon className="w-12 h-12 text-primary" />
+              <span className="font-medium text-primary">
+                {t("app.myWishlist")}
+              </span>
+            </motion.button>
+          </div>
 
+          {/* Family Members */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-foreground">
+              Family Members
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              <button
-                onClick={() => handleUserSelect(null)}
-                className="flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
-              >
-                <UsersIcon className="w-10 h-10 text-red-700 group-hover:text-red-800" />
-                <span className="font-medium text-gray-900">
-                  {t("app.allWishlists")}
-                </span>
-              </button>
-
-              <button
-                onClick={() => handleUserSelect(session.user.id)}
-                className="flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
-              >
-                <HeartIcon className="w-10 h-10 text-red-700 group-hover:text-red-800" />
-                <span className="font-medium text-gray-900">
-                  {t("app.myWishlist")}
-                </span>
-              </button>
-
               {users
                 .filter((user) => user.id !== session.user.id)
                 .map((user) => (
-                  <button
+                  <motion.button
                     key={user.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => handleUserSelect(user.id)}
-                    className="flex flex-col items-center gap-3 p-6 border border-gray-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
+                    className="flex flex-col items-center gap-3 p-6 bg-card border rounded-lg hover:border-primary/50 hover:shadow-lg transition-all"
                   >
                     <UserAvatar user={user} size="xl" />
-                    <span className="font-medium text-gray-900 text-center truncate w-full max-w-[120px]">
+                    <span className="font-medium text-card-foreground truncate w-full max-w-[120px]">
                       {user.username}
                     </span>
-                  </button>
+                  </motion.button>
                 ))}
             </div>
           </div>
         </div>
-      </div>
+      </Dashboard>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-100 to-gray-50">
-      <div className="max-w-6xl mx-auto p-4 sm:p-6">
-        <Toaster position="top-right" />
+    <Dashboard
+      user={currentUser}
+      onBack={() => setShowUserSelection(true)}
+      onLogout={handleSignOut}
+      showTips={false}
+    >
+      <Toaster position="top-right" />
 
-        <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-          <div className="flex items-center gap-2">
-            <GiftIcon className="w-8 h-8 text-red-700" />
-            <h1 className="text-3xl font-bold text-gray-900">
-              {t("app.title")}
-            </h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setShowUserSelection(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
-            >
-              <ArrowLeftIcon className="w-5 h-5" />
-              <span>{t("wishlist.changeWishlist")}</span>
-            </button>
-            {currentUser && (
-              <button
-                onClick={() => handleUserSelect(currentUser.id)}
-                className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg transition-colors"
-              >
-                <UserAvatar user={currentUser} size="sm" />
-                <span className="text-gray-900">{currentUser.username}</span>
-              </button>
-            )}
-            <button
-              onClick={handleSignOut}
-              className="flex items-center gap-2 text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 transition-colors"
-            >
-              <LogOutIcon className="w-5 h-5" />
-              <span className="hidden sm:inline">{t("auth.signOut")}</span>
-            </button>
-          </div>
-        </header>
+      <div className="space-y-6">
+        {(!selectedUser || selectedUser === session.user.id) && (
+          <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
+        )}
 
-        <div className="bg-white rounded-xl shadow-md border border-gray-200 p-4 sm:p-6">
-          {(!selectedUser || selectedUser === session.user.id) && (
-            <div className="mb-6">
-              <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredItems.map((item) => (
-              <WishlistItemComponent
-                key={item.id}
-                item={item}
-                user={users.find((u) => u.id === item.user_id)}
-                canEdit={item.user_id === session.user.id}
-                onDelete={handleDelete}
-                onUpdate={fetchItems}
-              />
-            ))}
-          </div>
-
-          {filteredItems.length === 0 && (
-            <p className="text-center text-gray-600 py-12">
-              {t("wishlist.noWishes")}
-            </p>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredItems.map((item) => (
+            <WishlistItemComponent
+              key={item.id}
+              item={item}
+              user={users.find((u) => u.id === item.user_id)}
+              canEdit={item.user_id === session.user.id}
+              onDelete={handleDelete}
+              onUpdate={fetchItems}
+            />
+          ))}
         </div>
+
+        {filteredItems.length === 0 && (
+          <p className="text-center text-muted-foreground py-12">
+            {t("wishlist.noWishes")}
+          </p>
+        )}
       </div>
-    </div>
+    </Dashboard>
   );
 }
