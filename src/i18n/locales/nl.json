@@ -1,7 +1,9 @@
 {
   "app": {
     "title": "Familie Kerstlijst",
-    "allWishlists": "Alle Wensen"
+    "allWishlists": "Alle Wensen",
+    "chooseWishlist": "Kies een Verlanglijst",
+    "selectWishlistDescription": "Selecteer een verlanglijst van een familielid of bekijk alle wensen"
   },
   "auth": {
     "signIn": "Inloggen",
@@ -54,7 +56,8 @@
       "cancel": "Annuleren"
     },
     "noWishes": "Geen wensen gevonden. Voeg wat wensen toe om te beginnen!",
-    "required": "Verplicht"
+    "required": "Verplicht",
+    "changeWishlist": "Verander Verlanglijst"
   },
   "messages": {
     "itemAdded": "Item succesvol toegevoegd!",

@@ -1,7 +1,9 @@
 {
   "app": {
     "title": "Family Wishlist",
-    "allWishlists": "All Wishes"
+    "allWishlists": "All Wishes",
+    "chooseWishlist": "Choose a Wishlist",
+    "selectWishlistDescription": "Select a family member's wishlist or view all wishes"
   },
   "auth": {
     "signIn": "Sign In",
@@ -54,7 +56,8 @@
       "cancel": "Cancel"
     },
     "noWishes": "No wishes found. Add some wishes to get started!",
-    "required": "Required"
+    "required": "Required",
+    "changeWishlist": "Change Wishlist"
   },
   "messages": {
     "itemAdded": "Item added successfully!",

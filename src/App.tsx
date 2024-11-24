@@ -15,6 +15,8 @@ import {
   ExternalLinkIcon,
   ArrowUpIcon,
   StarIcon,
+  ArrowLeftIcon,
+  UsersIcon,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -29,6 +31,7 @@ export default function App() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("priority");
+  const [showUserSelection, setShowUserSelection] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -99,6 +102,11 @@ export default function App() {
     });
   };
 
+  const handleUserSelect = (userId: string | null) => {
+    setSelectedUser(userId);
+    setShowUserSelection(false);
+  };
+
   if (!session) {
     return <AuthForm onAuth={() => {}} />;
   }
@@ -108,6 +116,84 @@ export default function App() {
     ? items.filter((item) => item.user_id === selectedUser)
     : items;
   const sortedItems = sortItems(filteredItems);
+
+  if (showUserSelection) {
+    return (
+      <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed">
+        <div className="min-h-screen bg-white/90 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto p-6">
+            <header className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-2">
+                <GiftIcon className="w-8 h-8 text-red-600" />
+                <h1 className="text-4xl font-bold text-gray-800">
+                  {t("app.title")}
+                </h1>
+              </div>
+              <div className="flex items-center gap-4">
+                <Tooltip text={t("help.language")} position="bottom">
+                  <LanguageSelector />
+                </Tooltip>
+                {currentUser && (
+                  <div className="flex items-center gap-2">
+                    <UserAvatar user={currentUser} size="md" />
+                    <span className="text-gray-700">
+                      {currentUser.username}
+                    </span>
+                  </div>
+                )}
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-1 text-gray-600 bg-white hover:text-gray-900 border border-gray-300 rounded-md px-2 py-1"
+                >
+                  <LogOutIcon className="w-5 h-5" />
+                  {t("auth.signOut")}
+                </button>
+              </div>
+            </header>
+
+            <div className="bg-white rounded-lg shadow-lg p-6 h-[80vh] flex flex-col">
+              <div className="text-center mb-8">
+                <UsersIcon className="w-16 h-16 text-red-600 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                  {t("app.chooseWishlist")}
+                </h2>
+                <p className="text-gray-600">
+                  {t("app.selectWishlistDescription")}
+                </p>
+              </div>
+
+              <div className="flex-1 overflow-y-auto scrollbar-custom">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <button
+                    onClick={() => handleUserSelect(null)}
+                    className="flex flex-col items-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-lg hover:border-red-400 hover:bg-red-50 transition-colors"
+                  >
+                    <UsersIcon className="w-12 h-12 text-red-600" />
+                    <span className="font-medium text-gray-900">
+                      {t("app.allWishlists")}
+                    </span>
+                  </button>
+
+                  {users.map((user) => (
+                    <button
+                      key={user.id}
+                      onClick={() => handleUserSelect(user.id)}
+                      className="flex flex-col items-center gap-3 p-6 border-2 border-gray-200 rounded-lg hover:border-red-400 hover:bg-red-50 transition-colors"
+                    >
+                      <UserAvatar user={user} size="lg" />
+                      <span className="font-medium text-gray-900">
+                        {user.username}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed">
@@ -176,7 +262,7 @@ export default function App() {
                       <li>
                         <span className="inline-flex items-center">
                           {t("help.tips.priority")}
-                          <StarIcon className="w-4 h-4 mx-1 text-blue-800 " />
+                          <StarIcon className="w-4 h-4 mx-1 text-blue-800" />
                         </span>
                       </li>
                     </ul>
@@ -186,45 +272,16 @@ export default function App() {
             )}
 
             <div className="flex flex-wrap items-center gap-4 mb-6">
-              <div className="flex flex-wrap gap-4 flex-1" role="tablist">
-                <Tooltip text={t("help.viewAllTooltip")} position="bottom">
-                  <button
-                    onClick={() => setSelectedUser(null)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                      !selectedUser
-                        ? "bg-red-600 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                    role="tab"
-                    aria-selected={!selectedUser}
-                  >
-                    {t("app.allWishlists")}
-                  </button>
-                </Tooltip>
-                {users.map((user) => (
-                  <Tooltip
-                    key={user.id}
-                    text={t("help.viewUserTooltip", {
-                      username: user.username,
-                    })}
-                    position="bottom"
-                  >
-                    <button
-                      onClick={() => setSelectedUser(user.id)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
-                        selectedUser === user.id
-                          ? "bg-red-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                      role="tab"
-                      aria-selected={selectedUser === user.id}
-                    >
-                      <UserAvatar user={user} size="sm" />
-                      <span>{user.username}</span>
-                    </button>
-                  </Tooltip>
-                ))}
-              </div>
+              <button
+                onClick={() => setShowUserSelection(true)}
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-white hover:text-gray-900 border border-gray-300 rounded-md transition-colors"
+              >
+                <ArrowLeftIcon className="w-5 h-5" />
+                {t("wishlist.changeWishlist")}
+              </button>
+
+              <div className="flex-1" />
+
               <Tooltip text={t("wishlist.sort.sortBy")} position="bottom">
                 <div className="flex items-center gap-2">
                   <ArrowUpIcon className="w-5 h-5 text-gray-500" />
