@@ -62,10 +62,10 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full py-3 px-4 border-2 border-dashed border-red-300 rounded-lg text-red-600 hover:border-red-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 flex items-center justify-center gap-2"
+        className="w-full py-4 px-6 border-2 border-dashed border-red-200 rounded-xl text-red-600 hover:border-red-400 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors flex items-center justify-center gap-2"
       >
         <PlusIcon className="w-5 h-5" />
-        {t("wishlist.addWish")}
+        <span className="font-medium">{t("wishlist.addWish")}</span>
       </button>
 
       <Transition show={isOpen} as={Fragment}>
@@ -92,8 +92,8 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md bg-white rounded-lg shadow-xl">
-                <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <Dialog.Panel className="w-full max-w-md bg-white rounded-xl shadow-xl">
+                <div className="flex items-center justify-between p-4 border-b border-gray-100">
                   <Dialog.Title className="text-lg font-semibold text-gray-900">
                     {t("wishlist.addWish")}
                   </Dialog.Title>
@@ -114,7 +114,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
                       <input
                         type="text"
                         required
-                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
+                        className="mt-1 block w-full rounded-lg border border-gray-200 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2.5"
                         value={formData.title}
                         onChange={(e) =>
                           setFormData({ ...formData, title: e.target.value })
@@ -126,7 +126,8 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
                         {t("wishlist.description")}
                       </label>
                       <textarea
-                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
+                        className="mt-1 block w-full rounded-lg border border-gray-200 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2.5"
+                        rows={3}
                         value={formData.description}
                         onChange={(e) =>
                           setFormData({ ...formData, description: e.target.value })
@@ -141,7 +142,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
                         type="number"
                         step="0.01"
                         min="0"
-                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
+                        className="mt-1 block w-full rounded-lg border border-gray-200 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2.5"
                         value={formData.price}
                         onChange={(e) =>
                           setFormData({ ...formData, price: e.target.value })
@@ -154,7 +155,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
                       </label>
                       <input
                         type="url"
-                        className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
+                        className="mt-1 block w-full rounded-lg border border-gray-200 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2.5"
                         value={formData.link}
                         onChange={(e) =>
                           setFormData({ ...formData, link: e.target.value })
@@ -180,11 +181,11 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
                       </label>
                     </div>
                   </div>
-                  <div className="mt-6 flex justify-end space-x-4">
+                  <div className="mt-6 flex justify-end gap-3">
                     <button
                       type="button"
                       onClick={() => !loading && setIsOpen(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
                       disabled={loading}
                     >
                       {t("wishlist.actions.cancel")}
@@ -192,7 +193,7 @@ export default function AddWishlistItem({ userId, onAdd }: AddWishlistItemProps)
                     <button
                       type="submit"
                       disabled={loading}
-                      className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition-colors"
                     >
                       {loading ? t("wishlist.actions.adding") : t("wishlist.actions.add")}
                     </button>

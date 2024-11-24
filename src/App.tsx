@@ -5,22 +5,9 @@ import AuthForm from "./components/AuthForm";
 import WishlistItemComponent from "./components/WishlistItem";
 import AddWishlistItem from "./components/AddWishlistItem";
 import UserAvatar from "./components/UserAvatar";
-import WelcomeModal from "./components/WelcomeModal";
-import Tooltip from "./components/Tooltip";
-import {
-  GiftIcon,
-  LogOutIcon,
-  HelpCircleIcon,
-  ExternalLinkIcon,
-  ArrowUpIcon,
-  StarIcon,
-  ArrowLeftIcon,
-  UsersIcon,
-} from "lucide-react";
+import { GiftIcon, LogOutIcon, UsersIcon, ArrowLeftIcon } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-
-type SortOption = "priority" | "price";
 
 export default function App() {
   const { t } = useTranslation();
@@ -28,8 +15,6 @@ export default function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const [showHelp, setShowHelp] = useState(false);
-  const [sortBy, setSortBy] = useState<SortOption>("priority");
   const [showUserSelection, setShowUserSelection] = useState(true);
 
   useEffect(() => {
@@ -91,16 +76,6 @@ export default function App() {
     setSession(null);
   };
 
-  const sortItems = (items: WishlistItem[]) => {
-    return [...items].sort((a, b) => {
-      if (sortBy === "price") {
-        return b.price - a.price;
-      } else {
-        return Number(b.is_priority) - Number(a.is_priority);
-      }
-    });
-  };
-
   const handleUserSelect = (userId: string | null) => {
     setSelectedUser(userId);
     setShowUserSelection(false);
@@ -114,79 +89,72 @@ export default function App() {
   const filteredItems = selectedUser
     ? items.filter((item) => item.user_id === selectedUser)
     : items;
-  const sortedItems = sortItems(filteredItems);
 
   if (showUserSelection) {
     return (
-      <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed">
-        <div className="min-h-screen bg-white/90 backdrop-blur-sm">
-          <div className="max-w-4xl mx-auto p-6">
-            <header className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-2">
-                <GiftIcon className="w-8 h-8 text-red-600" />
-                <h1 className="text-4xl font-bold text-gray-800">
-                  {t("app.title")}
-                </h1>
-              </div>
-              <div className="flex items-center gap-4">
-                {currentUser && (
-                  <button
-                    onClick={() => handleUserSelect(currentUser.id)}
-                    className="flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
-                  >
-                    <UserAvatar user={currentUser} size="sm" />
-                    <span className="text-gray-700">
-                      {currentUser.username}
-                    </span>
-                  </button>
-                )}
+      <div className="min-h-screen bg-gradient-to-br from-red-100 to-gray-50">
+        <div className="max-w-6xl mx-auto p-4 sm:p-6">
+          <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-2">
+              <GiftIcon className="w-8 h-8 text-red-700" />
+              <h1 className="text-3xl font-bold text-gray-900">
+                {t("app.title")}
+              </h1>
+            </div>
+            <div className="flex items-center gap-3">
+              {currentUser && (
                 <button
-                  onClick={handleSignOut}
-                  className="flex items-center gap-1 text-gray-600 bg-white hover:text-gray-900 border border-gray-300 rounded-md px-2 py-1"
+                  onClick={() => handleUserSelect(currentUser.id)}
+                  className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg transition-colors"
                 >
-                  <LogOutIcon className="w-5 h-5" />
-                  {t("auth.signOut")}
+                  <UserAvatar user={currentUser} size="sm" />
+                  <span className="text-gray-900">{currentUser.username}</span>
                 </button>
-              </div>
-            </header>
+              )}
+              <button
+                onClick={handleSignOut}
+                className="flex items-center gap-2 text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 transition-colors"
+              >
+                <LogOutIcon className="w-5 h-5" />
+                <span className="hidden sm:inline">{t("auth.signOut")}</span>
+              </button>
+            </div>
+          </header>
 
-            <div className="bg-white rounded-lg shadow-lg p-6 h-[80vh] flex flex-col">
-              <div className="text-center mb-8">
-                <UsersIcon className="w-16 h-16 text-red-600 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  {t("app.chooseWishlist")}
-                </h2>
-                <p className="text-gray-600">
-                  {t("app.selectWishlistDescription")}
-                </p>
-              </div>
+          <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6">
+            <div className="text-center mb-8">
+              <UsersIcon className="w-12 h-12 text-red-700 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                {t("app.chooseWishlist")}
+              </h2>
+              <p className="text-gray-700">
+                {t("app.selectWishlistDescription")}
+              </p>
+            </div>
 
-              <div className="flex-1 overflow-y-auto scrollbar-custom">
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <button
-                    onClick={() => handleUserSelect(null)}
-                    className="flex flex-col items-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-lg hover:border-red-400 hover:bg-red-50 transition-colors"
-                  >
-                    <UsersIcon className="w-12 h-12 text-red-600" />
-                    <span className="font-medium text-gray-900">
-                      {t("app.allWishlists")}
-                    </span>
-                  </button>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              <button
+                onClick={() => handleUserSelect(null)}
+                className="flex flex-col items-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
+              >
+                <UsersIcon className="w-10 h-10 text-red-700 group-hover:text-red-800" />
+                <span className="font-medium text-gray-900">
+                  {t("app.allWishlists")}
+                </span>
+              </button>
 
-                  {users.map((user) => (
-                    <button
-                      key={user.id}
-                      onClick={() => handleUserSelect(user.id)}
-                      className="flex flex-col items-center gap-3 p-6 border-2 border-gray-200 rounded-lg hover:border-red-400 hover:bg-red-50 transition-colors"
-                    >
-                      <UserAvatar user={user} size="lg" />
-                      <span className="font-medium text-gray-900">
-                        {user.username}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+              {users.map((user) => (
+                <button
+                  key={user.id}
+                  onClick={() => handleUserSelect(user.id)}
+                  className="flex flex-col items-center gap-3 p-6 border border-gray-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
+                >
+                  <UserAvatar user={user} size="lg" />
+                  <span className="font-medium text-gray-900 text-center">
+                    {user.username}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -195,135 +163,69 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed">
-      <div className="min-h-screen bg-white/90 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto p-6">
-          <Toaster position="top-right" />
-          <WelcomeModal />
+    <div className="min-h-screen bg-gradient-to-br from-red-100 to-gray-50">
+      <div className="max-w-6xl mx-auto p-4 sm:p-6">
+        <Toaster position="top-right" />
 
-          <header className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-2">
-              <GiftIcon className="w-8 h-8 text-red-600" />
-              <h1 className="text-4xl font-bold text-gray-800">
-                {t("app.title")}
-              </h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <Tooltip text={t("help.tooltip")} position="bottom">
-                <button
-                  onClick={() => setShowHelp(!showHelp)}
-                  className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
-                  aria-label={t("help.tooltip")}
-                >
-                  <HelpCircleIcon className="w-6 h-6" />
-                </button>
-              </Tooltip>
-              {currentUser && (
-                <button
-                  onClick={() => {
-                    setSelectedUser(currentUser.id);
-                    setShowUserSelection(false);
-                  }}
-                  className="flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
-                >
-                  <UserAvatar user={currentUser} size="sm" />
-                  <span className="text-gray-700">{currentUser.username}</span>
-                </button>
-              )}
-              <button
-                onClick={handleSignOut}
-                className="flex items-center gap-1 text-gray-600 bg-white hover:text-gray-900 border border-gray-300 rounded-md px-2 py-1"
-              >
-                <LogOutIcon className="w-5 h-5" />
-                {t("auth.signOut")}
-              </button>
-            </div>
-          </header>
-
-          <div className="bg-white rounded-lg shadow-lg p-6 h-[80vh] flex flex-col">
-            {showHelp && (
-              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <HelpCircleIcon className="h-5 w-5 text-blue-400" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-blue-800">
-                      {t("help.quickTips")}
-                    </h3>
-                    <ul className="mt-2 text-sm text-blue-700 list-disc list-inside">
-                      <li>{t("help.tips.addWish")}</li>
-                      <li>{t("help.tips.switchLists")}</li>
-                      <li>
-                        <span className="inline-flex items-center">
-                          {t("help.tips.clickLinks.before")}
-                          <ExternalLinkIcon className="w-4 h-4 mx-1" />
-                          {t("help.tips.clickLinks.after")}
-                        </span>
-                      </li>
-                      <li>
-                        <span className="inline-flex items-center">
-                          {t("help.tips.priority")}
-                          <StarIcon className="w-4 h-4 mx-1 text-blue-800" />
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              <button
-                onClick={() => setShowUserSelection(true)}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-white hover:text-gray-900 border border-gray-300 rounded-md transition-colors"
-              >
-                <ArrowLeftIcon className="w-5 h-5" />
-                {t("wishlist.changeWishlist")}
-              </button>
-
-              <div className="flex-1" />
-
-              <Tooltip text={t("wishlist.sort.sortBy")} position="bottom">
-                <div className="flex items-center gap-2">
-                  <ArrowUpIcon className="w-5 h-5 text-gray-500" />
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as SortOption)}
-                    className="border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    <option value="priority">
-                      {t("wishlist.sort.priority")}
-                    </option>
-                    <option value="price">{t("wishlist.sort.price")}</option>
-                  </select>
-                </div>
-              </Tooltip>
-            </div>
-
-            {(!selectedUser || selectedUser === session.user.id) && (
-              <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
-            )}
-            <div className="flex-1 overflow-y-auto scrollbar-custom">
-              <div className="space-y-4">
-                {sortedItems.map((item) => (
-                  <WishlistItemComponent
-                    key={item.id}
-                    item={item}
-                    user={users.find((u) => u.id === item.user_id)}
-                    canEdit={item.user_id === session.user.id}
-                    onDelete={handleDelete}
-                    onUpdate={fetchItems}
-                  />
-                ))}
-                {sortedItems.length === 0 && (
-                  <p className="text-center text-gray-500 py-8">
-                    {t("wishlist.noWishes")}
-                  </p>
-                )}
-              </div>
-            </div>
+        <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-2">
+            <GiftIcon className="w-8 h-8 text-red-700" />
+            <h1 className="text-3xl font-bold text-gray-900">
+              {t("app.title")}
+            </h1>
           </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowUserSelection(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+            >
+              <ArrowLeftIcon className="w-5 h-5" />
+              <span>{t("wishlist.changeWishlist")}</span>
+            </button>
+            {currentUser && (
+              <button
+                onClick={() => handleUserSelect(currentUser.id)}
+                className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg transition-colors"
+              >
+                <UserAvatar user={currentUser} size="sm" />
+                <span className="text-gray-900">{currentUser.username}</span>
+              </button>
+            )}
+            <button
+              onClick={handleSignOut}
+              className="flex items-center gap-2 text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 transition-colors"
+            >
+              <LogOutIcon className="w-5 h-5" />
+              <span className="hidden sm:inline">{t("auth.signOut")}</span>
+            </button>
+          </div>
+        </header>
+
+        <div className="bg-white rounded-xl shadow-md border border-gray-200 p-4 sm:p-6">
+          {(!selectedUser || selectedUser === session.user.id) && (
+            <div className="mb-6">
+              <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
+            </div>
+          )}
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredItems.map((item) => (
+              <WishlistItemComponent
+                key={item.id}
+                item={item}
+                user={users.find((u) => u.id === item.user_id)}
+                canEdit={item.user_id === session.user.id}
+                onDelete={handleDelete}
+                onUpdate={fetchItems}
+              />
+            ))}
+          </div>
+          
+          {filteredItems.length === 0 && (
+            <p className="text-center text-gray-600 py-12">
+              {t("wishlist.noWishes")}
+            </p>
+          )}
         </div>
       </div>
     </div>
