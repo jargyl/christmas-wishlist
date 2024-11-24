@@ -134,12 +134,15 @@ export default function App() {
                   <LanguageSelector />
                 </Tooltip>
                 {currentUser && (
-                  <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleUserSelect(currentUser.id)}
+                    className="flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
+                  >
                     <UserAvatar user={currentUser} size="md" />
                     <span className="text-gray-700">
                       {currentUser.username}
                     </span>
-                  </div>
+                  </button>
                 )}
                 <button
                   onClick={handleSignOut}
@@ -163,7 +166,7 @@ export default function App() {
               </div>
 
               <div className="flex-1 overflow-y-auto scrollbar-custom">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <button
                     onClick={() => handleUserSelect(null)}
                     className="flex flex-col items-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-lg hover:border-red-400 hover:bg-red-50 transition-colors"
@@ -223,10 +226,16 @@ export default function App() {
                 <LanguageSelector />
               </Tooltip>
               {currentUser && (
-                <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedUser(currentUser.id);
+                    setShowUserSelection(false);
+                  }}
+                  className="flex items-center gap-2 px-3 py-2 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
+                >
                   <UserAvatar user={currentUser} size="md" />
                   <span className="text-gray-700">{currentUser.username}</span>
-                </div>
+                </button>
               )}
               <button
                 onClick={handleSignOut}
