@@ -2,6 +2,7 @@
   "app": {
     "title": "Family Wishlist",
     "allWishlists": "All Wishes",
+    "myWishlist": "My List",
     "chooseWishlist": "Choose a Wishlist",
     "selectWishlistDescription": "Select a family member's wishlist or view all wishes"
   },

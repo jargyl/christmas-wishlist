@@ -5,7 +5,13 @@ import AuthForm from "./components/AuthForm";
 import WishlistItemComponent from "./components/WishlistItem";
 import AddWishlistItem from "./components/AddWishlistItem";
 import UserAvatar from "./components/UserAvatar";
-import { GiftIcon, LogOutIcon, UsersIcon, ArrowLeftIcon } from "lucide-react";
+import {
+  GiftIcon,
+  LogOutIcon,
+  UsersIcon,
+  ArrowLeftIcon,
+  HeartIcon,
+} from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
@@ -135,7 +141,7 @@ export default function App() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               <button
                 onClick={() => handleUserSelect(null)}
-                className="flex flex-col items-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
+                className="flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
               >
                 <UsersIcon className="w-10 h-10 text-red-700 group-hover:text-red-800" />
                 <span className="font-medium text-gray-900">
@@ -143,18 +149,30 @@ export default function App() {
                 </span>
               </button>
 
-              {users.map((user) => (
-                <button
-                  key={user.id}
-                  onClick={() => handleUserSelect(user.id)}
-                  className="flex flex-col items-center gap-3 p-6 border border-gray-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
-                >
-                  <UserAvatar user={user} size="lg" />
-                  <span className="font-medium text-gray-900 text-center">
-                    {user.username}
-                  </span>
-                </button>
-              ))}
+              <button
+                onClick={() => handleUserSelect(session.user.id)}
+                className="flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed border-red-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
+              >
+                <HeartIcon className="w-10 h-10 text-red-700 group-hover:text-red-800" />
+                <span className="font-medium text-gray-900">
+                  {t("app.myWishlist")}
+                </span>
+              </button>
+
+              {users
+                .filter((user) => user.id !== session.user.id)
+                .map((user) => (
+                  <button
+                    key={user.id}
+                    onClick={() => handleUserSelect(user.id)}
+                    className="flex flex-col items-center gap-3 p-6 border border-gray-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-colors group"
+                  >
+                    <UserAvatar user={user} size="xl" />
+                    <span className="font-medium text-gray-900 text-center truncate w-full max-w-[120px]">
+                      {user.username}
+                    </span>
+                  </button>
+                ))}
             </div>
           </div>
         </div>
@@ -207,8 +225,8 @@ export default function App() {
               <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
             </div>
           )}
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredItems.map((item) => (
               <WishlistItemComponent
                 key={item.id}
@@ -220,7 +238,7 @@ export default function App() {
               />
             ))}
           </div>
-          
+
           {filteredItems.length === 0 && (
             <p className="text-center text-gray-600 py-12">
               {t("wishlist.noWishes")}

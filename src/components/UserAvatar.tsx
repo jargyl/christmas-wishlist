@@ -3,7 +3,7 @@ import { User } from "../types";
 
 interface UserAvatarProps {
   user: User;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
 export default function UserAvatar({ user, size = "md" }: UserAvatarProps) {
@@ -11,6 +11,7 @@ export default function UserAvatar({ user, size = "md" }: UserAvatarProps) {
     sm: "w-6 h-6 text-xs",
     md: "w-8 h-8 text-sm",
     lg: "w-10 h-10 text-base",
+    xl: "w-12 h-12 text-xl",
   };
 
   const getInitials = (username: string) => {

@@ -2,6 +2,7 @@
   "app": {
     "title": "Familie Kerstlijst",
     "allWishlists": "Alle Wensen",
+    "myWishlist": "Mijn Lijst",
     "chooseWishlist": "Kies een Verlanglijst",
     "selectWishlistDescription": "Selecteer een verlanglijst van een familielid of bekijk alle wensen"
   },
