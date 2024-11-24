@@ -95,6 +95,10 @@
     "shopping": {
       "title": "Eenvoudig Winkelen",
       "description": "Klik op item links om direct naar de webshop te gaan waar ze gekocht kunnen worden."
+    },
+    "priority": {
+      "title": "Prioriteit Items",
+      "description": "Items gemarkeerd met een ster zijn hoge prioriteit wensen."
     }
   }
 }

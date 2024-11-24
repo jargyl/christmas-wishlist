@@ -5,11 +5,12 @@ import AuthForm from "./components/AuthForm";
 import WishlistItemComponent from "./components/WishlistItem";
 import AddWishlistItem from "./components/AddWishlistItem";
 import UserAvatar from "./components/UserAvatar";
-import { UsersIcon, HeartIcon, ExternalLinkIcon } from "lucide-react";
+import { UsersIcon, HeartIcon } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Dashboard from "./components/Dashboard";
 import { motion } from "framer-motion";
+import WelcomeModal from "./components/WelcomeModal";
 
 export default function App() {
   const { t } = useTranslation();
@@ -109,17 +110,18 @@ export default function App() {
         onLogout={handleSignOut}
         showTips={isFirstVisit}
       >
+        <WelcomeModal />
         <div className="space-y-8">
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleUserSelect(null)}
-              className="flex flex-col items-center gap-3 p-8 bg-primary/5 border-2 border-primary/20 rounded-lg hover:border-primary hover:bg-primary/10 transition-all"
+              className="flex flex-col items-center gap-2 p-4 sm:p-8 bg-primary/5 border-2 border-primary/20 rounded-lg hover:border-primary hover:bg-primary/10 transition-all"
             >
-              <UsersIcon className="w-12 h-12 text-primary" />
-              <span className="font-medium text-primary">
+              <UsersIcon className="w-8 h-8 sm:w-12 sm:h-12 text-primary" />
+              <span className="font-medium text-primary text-sm sm:text-base">
                 {t("app.allWishlists")}
               </span>
             </motion.button>
@@ -128,10 +130,10 @@ export default function App() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleUserSelect(session.user.id)}
-              className="flex flex-col items-center gap-3 p-8 bg-primary/5 border-2 border-primary/20 rounded-lg hover:border-primary hover:bg-primary/10 transition-all"
+              className="flex flex-col items-center gap-2 p-4 sm:p-8 bg-primary/5 border-2 border-primary/20 rounded-lg hover:border-primary hover:bg-primary/10 transition-all"
             >
-              <HeartIcon className="w-12 h-12 text-primary" />
-              <span className="font-medium text-primary">
+              <HeartIcon className="w-8 h-8 sm:w-12 sm:h-12 text-primary" />
+              <span className="font-medium text-primary text-sm sm:text-base">
                 {t("app.myWishlist")}
               </span>
             </motion.button>

@@ -1,17 +1,19 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
-import { GiftIcon, ListIcon, UsersIcon, ExternalLinkIcon } from 'lucide-react';
+import { GiftIcon, ListIcon, UsersIcon, ExternalLinkIcon, StarIcon } from 'lucide-react';
 
 export default function WelcomeModal() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
-    if (!hasSeenWelcome) {
+    const lastLoginTime = localStorage.getItem('lastLoginTime');
+    const currentTime = new Date().getTime();
+    
+    if (!lastLoginTime || (currentTime - parseInt(lastLoginTime)) > 24 * 60 * 60 * 1000) {
       setIsOpen(true);
-      localStorage.setItem('hasSeenWelcome', 'true');
+      localStorage.setItem('lastLoginTime', currentTime.toString());
     }
   }, []);
 
@@ -68,6 +70,14 @@ export default function WelcomeModal() {
                   <div>
                     <h3 className="font-semibold text-gray-900">{t('welcome.shopping.title')}</h3>
                     <p className="text-gray-600">{t('welcome.shopping.description')}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <StarIcon className="w-6 h-6 text-red-600 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{t('welcome.priority.title')}</h3>
+                    <p className="text-gray-600">{t('welcome.priority.description')}</p>
                   </div>
                 </div>
               </div>

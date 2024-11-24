@@ -95,6 +95,10 @@
     "shopping": {
       "title": "Easy Shopping",
       "description": "Click on item links to go directly to where they can be purchased."
+    },
+    "priority": {
+      "title": "Priority Items",
+      "description": "Items marked with a star are high priority wishes."
     }
   }
 }
