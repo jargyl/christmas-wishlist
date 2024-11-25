@@ -4,7 +4,8 @@
     "allWishlists": "All Wishes",
     "myWishlist": "My List",
     "chooseWishlist": "Choose a Wishlist",
-    "selectWishlistDescription": "Select a family member's wishlist or view all wishes"
+    "selectWishlistDescription": "Select a family member's wishlist or view all wishes",
+    "familyMembers": "Family Members"
   },
   "auth": {
     "signIn": "Sign In",
@@ -73,13 +74,9 @@
     "viewUserTooltip": "View {{username}}'s wishes",
     "quickTips": "Quick Tips",
     "tips": {
-      "addWish": "Click the Add New Wish button to create your wishlist",
-      "clickLinks": {
-        "before": "Click on the",
-        "after": "symbol to view products online"
-      },
-      "switchLists": "Click on a user's avatar to view their wishlist",
-      "priority": "Priority items are marked with a star"
+      "addWish": "To add a new wish, go to My List > Add New Wish",
+      "clickLinks": "If this symbol is present, you can view the item directly online by clicking on the symbol",
+      "priority": "If this star is present next to the item, the item is a high priority wish"
     }
   },
   "welcome": {

@@ -142,7 +142,7 @@ export default function App() {
           {/* Family Members */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-foreground">
-              Family Members
+              {t("app.familyMembers")}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {users
@@ -197,7 +197,9 @@ export default function App() {
 
         {filteredItems.length === 0 && (
           <p className="text-center text-muted-foreground py-12">
-            {t("wishlist.noWishes")}
+            {selectedUser === session.user.id
+              ? t("wishlist.noWishes")
+              : "This user hasn't added any wishes yet"}
           </p>
         )}
       </div>

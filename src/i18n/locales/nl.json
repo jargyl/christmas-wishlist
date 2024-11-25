@@ -4,7 +4,8 @@
     "allWishlists": "Alle Wensen",
     "myWishlist": "Mijn Lijst",
     "chooseWishlist": "Kies een Verlanglijst",
-    "selectWishlistDescription": "Selecteer een verlanglijst van een familielid of bekijk alle wensen"
+    "selectWishlistDescription": "Selecteer een verlanglijst van een familielid of bekijk alle wensen",
+    "familyMembers": "Familieleden"
   },
   "auth": {
     "signIn": "Inloggen",
@@ -73,13 +74,9 @@
     "viewUserTooltip": "Bekijk de wensen van {{username}}",
     "quickTips": "Snelle Tips",
     "tips": {
-      "addWish": "Klik op \"Nieuwe Wens Toevoegen\" om je verlanglijst te maken",
-      "switchLists": "Gebruik de knoppen hieronder om tussen familieleden te wisselen",
-      "clickLinks": {
-        "before": "Klik op het",
-        "after": "symbool om producten online te bekijken"
-      },
-      "priority": "Prioriteit items zijn gemarkeerd met een ster"
+      "addWish": "Om een nieuwe wens toe te voegen, ga naar Mijn Lijst > Nieuwe Wens Toevoegen",
+      "clickLinks": "Als dit symbool is aanwezig, kun je het item direct online bekijken door op het symbool te klikken",
+      "priority": "Als dit symbool is aanwezig naast het item, is het item een hoge prioriteit wens"
     }
   },
   "welcome": {

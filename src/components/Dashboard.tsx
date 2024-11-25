@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowLeftIcon, LogOutIcon, HelpCircleIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  HelpCircleIcon,
+  LogOutIcon,
+} from "lucide-react";
 import { cn } from "../lib/utils";
 import UserAvatar from "./UserAvatar";
 import { User } from "../types";
+import TipsModal from "./TipsModal";
 
 interface DashboardProps {
   user: User;
   onBack?: () => void;
   onLogout: () => void;
   children: React.ReactNode;
-  showTips?: boolean;
 }
 
 export default function Dashboard({
@@ -19,9 +24,10 @@ export default function Dashboard({
   onBack,
   onLogout,
   children,
-  showTips = false,
 }: DashboardProps) {
   const { t } = useTranslation();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showTipsModal, setShowTipsModal] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -37,63 +43,45 @@ export default function Dashboard({
               <span>{t("wishlist.changeWishlist")}</span>
             </button>
           ) : (
-            <div className="flex items-center gap-4 ml-auto">
-              <div className="flex items-center gap-3 px-4 py-2 bg-card rounded-lg border">
+            <div className="relative ml-auto">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center gap-3 px-4 py-2 bg-card rounded-lg border hover:border-primary/50 transition-colors"
+              >
                 <UserAvatar user={user} size="md" />
                 <span className="font-medium text-card-foreground">
                   {user.username}
                 </span>
-              </div>
-              <button
-                onClick={onLogout}
-                className="inline-flex items-center gap-2 px-4 py-2 text-destructive hover:text-destructive-foreground hover:bg-destructive rounded-lg transition-colors"
-              >
-                <LogOutIcon className="w-5 h-5" />
-                <span className="hidden sm:inline">{t("auth.signOut")}</span>
+                <ChevronDownIcon className="w-4 h-4 text-muted-foreground" />
               </button>
+
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border py-1 z-50">
+                  <button
+                    onClick={() => {
+                      setShowTipsModal(true);
+                      setShowDropdown(false);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                  >
+                    <HelpCircleIcon className="w-4 h-4" />
+                    Tips & Help
+                  </button>
+                  <button
+                    onClick={() => {
+                      onLogout();
+                      setShowDropdown(false);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                  >
+                    <LogOutIcon className="w-4 h-4" />
+                    {t("auth.signOut")}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
-
-        {/* Tips Section */}
-        {showTips && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8 bg-card rounded-lg border p-6"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <HelpCircleIcon className="w-6 h-6 text-primary" />
-              <h2 className="text-xl font-semibold text-card-foreground">
-                {t("help.quickTips")}
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 rounded-md bg-accent/50 border border-accent-foreground/10">
-                <p className="text-sm text-accent-foreground">
-                  {t("help.tips.addWish")}
-                </p>
-              </div>
-              <div className="p-4 rounded-md bg-accent/50 border border-accent-foreground/10">
-                <p className="text-sm text-accent-foreground">
-                  {t("help.tips.clickLinks.before")}{" "}
-                  <ExternalLinkIcon className="w-4 h-4 inline" />{" "}
-                  {t("help.tips.clickLinks.after")}
-                </p>
-              </div>
-              <div className="p-4 rounded-md bg-accent/50 border border-accent-foreground/10">
-                <p className="text-sm text-accent-foreground">
-                  {t("help.tips.switchLists")}
-                </p>
-              </div>
-              <div className="p-4 rounded-md bg-accent/50 border border-accent-foreground/10">
-                <p className="text-sm text-accent-foreground">
-                  {t("help.tips.priority")}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
 
         {/* Main Content */}
         <motion.main
@@ -104,6 +92,20 @@ export default function Dashboard({
           {children}
         </motion.main>
       </div>
+
+      {/* Tips Modal */}
+      <TipsModal
+        isOpen={showTipsModal}
+        onClose={() => setShowTipsModal(false)}
+      />
+
+      {/* Backdrop for dropdown */}
+      {showDropdown && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setShowDropdown(false)}
+        />
+      )}
     </div>
   );
 }
