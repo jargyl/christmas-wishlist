@@ -104,7 +104,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed flex items-center justify-center p-4 relative">
+    <div className="h-[100dvh] bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed flex items-center justify-center p-4 relative">
       <Toaster position="top-right" />
       <div className="max-w-sm w-full bg-white rounded-xl shadow-lg p-8">
         <div className="flex items-center justify-center gap-2 mb-8">

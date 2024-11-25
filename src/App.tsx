@@ -168,6 +168,8 @@ export default function App() {
     );
   }
 
+  const isPersonalList = selectedUser === session.user.id;
+
   return (
     <Dashboard
       user={currentUser}
@@ -178,11 +180,11 @@ export default function App() {
       <Toaster position="top-right" />
 
       <div className="space-y-6">
-        {(!selectedUser || selectedUser === session.user.id) && (
+        {isPersonalList && (
           <AddWishlistItem userId={session.user.id} onAdd={fetchItems} />
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredItems.map((item) => (
             <WishlistItemComponent
               key={item.id}
