@@ -85,6 +85,7 @@ export default function App() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
+    localStorage.removeItem("supabase.auth.token");
   };
 
   const handleUserSelect = (userId: string | null) => {
@@ -110,7 +111,7 @@ export default function App() {
         onLogout={handleSignOut}
         showTips={isFirstVisit}
       >
-        <WelcomeModal />
+        <WelcomeModal userId={session.user.id} />
         <div className="space-y-8">
           {/* Quick Actions */}
           <div className="grid grid-cols-2 gap-4">
@@ -201,7 +202,7 @@ export default function App() {
           <p className="text-center text-muted-foreground py-12">
             {selectedUser === session.user.id
               ? t("wishlist.noWishes")
-              : "This user hasn't added any wishes yet"}
+              : t("wishlist.noWishesOther")}
           </p>
         )}
       </div>

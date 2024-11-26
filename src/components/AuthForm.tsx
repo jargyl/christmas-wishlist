@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { LogInIcon, GiftIcon } from "lucide-react";
+import {
+  LogInIcon,
+  GiftIcon,
+  UserIcon,
+  KeyIcon,
+  ImageIcon,
+  ChevronLeftIcon,
+} from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import Tooltip from "./Tooltip";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface AuthFormProps {
   onAuth: () => void;
@@ -57,6 +64,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           toast.error(t("auth.invalidCredentials"));
         }
       } else {
+        // Check for existing username
         const { data: existingUser } = await supabase
           .from("profiles")
           .select("username")
@@ -67,6 +75,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
           throw new Error(t("auth.usernameTaken"));
         }
 
+        // Sign up process
         const { data: authData, error: signUpError } =
           await supabase.auth.signUp({
             email,
@@ -78,6 +87,7 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
               },
             },
           });
+
         if (signUpError) throw signUpError;
 
         if (authData.user) {
@@ -104,91 +114,122 @@ export default function AuthForm({ onAuth }: AuthFormProps) {
   };
 
   return (
-    <div className="h-[100dvh] bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed flex items-center justify-center p-4 relative">
+    <div className="h-[100dvh] bg-[url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80')] bg-cover bg-fixed flex items-center justify-center p-4">
       <Toaster position="top-right" />
-      <div className="max-w-sm w-full bg-white rounded-xl shadow-lg p-8">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <GiftIcon className="w-8 h-8 text-red-600" />
-          <h1 className="text-3xl font-bold text-gray-800">{t("app.title")}</h1>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden"
+      >
+        <div className="p-8">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <GiftIcon className="w-10 h-10 text-red-600" />
+            <h1 className="text-3xl font-bold text-gray-800">
+              {t("app.title")}
+            </h1>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.form
+              key={isLogin ? "login" : "signup"}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
+              {!isLogin && (
+                <div className="relative group">
+                  <label className="block text-base font-medium text-gray-700 mb-2">
+                    {t("auth.profilePicture")}
+                  </label>
+                  <div className="relative">
+                    <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="url"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring focus:ring-red-200 transition-colors text-base"
+                      value={formData.avatarUrl}
+                      onChange={(e) =>
+                        setFormData({ ...formData, avatarUrl: e.target.value })
+                      }
+                      placeholder="https://example.com/photo.jpg"
+                    />
+                  </div>
+                  <p className="mt-2 text-sm text-gray-500">
+                    {t("auth.profilePictureHint")}
+                  </p>
+                </div>
+              )}
+
+              <div className="relative group">
+                <label className="block text-base font-medium text-gray-700 mb-2">
+                  {t("auth.username")}
+                </label>
+                <div className="relative">
+                  <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    required
+                    pattern="[a-zA-Z0-9_-]+"
+                    title={t("auth.usernameRequirements")}
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring focus:ring-red-200 transition-colors text-base"
+                    value={formData.username}
+                    onChange={(e) =>
+                      setFormData({ ...formData, username: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="relative group">
+                <label className="block text-base font-medium text-gray-700 mb-2">
+                  {t("auth.password")}
+                </label>
+                <div className="relative">
+                  <KeyIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="password"
+                    required
+                    minLength={!isLogin ? 6 : undefined}
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring focus:ring-red-200 transition-colors text-base"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                aria-label={isLogin ? t("auth.signIn") : t("auth.signUp")}
+              >
+                {loading ? (
+                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : isLogin ? (
+                  <>
+                    <LogInIcon className="w-5 h-5" />
+                    {t("auth.signIn")}
+                  </>
+                ) : (
+                  t("auth.signUp")
+                )}
+              </button>
+            </motion.form>
+          </AnimatePresence>
+
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-red-600 hover:text-red-700 font-medium flex items-center gap-2 mx-auto transition-colors"
+            >
+              <ChevronLeftIcon className="w-4 h-4" />
+              {isLogin ? t("auth.noAccount") : t("auth.haveAccount")}
+            </button>
+          </div>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {!isLogin && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                {t("auth.profilePicture")}
-              </label>
-              <input
-                type="url"
-                className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
-                value={formData.avatarUrl}
-                onChange={(e) =>
-                  setFormData({ ...formData, avatarUrl: e.target.value })
-                }
-                placeholder="https://example.com/image.jpg"
-              />
-              <p className="mt-1 text-sm text-gray-500">
-                {t("auth.profilePictureHint")}
-              </p>
-            </div>
-          )}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              {t("auth.username")}
-            </label>
-            <input
-              type="text"
-              required
-              pattern="[a-zA-Z0-9_-]+"
-              title={t("auth.usernameRequirements")}
-              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
-              value={formData.username}
-              onChange={(e) =>
-                setFormData({ ...formData, username: e.target.value })
-              }
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              {t("auth.password")}
-            </label>
-            <input
-              type="password"
-              required
-              minLength={!isLogin ? 6 : undefined}
-              className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 p-2"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              t("auth.loading")
-            ) : isLogin ? (
-              <>
-                <LogInIcon className="h-5 w-5" />
-                {t("auth.signIn")}
-              </>
-            ) : (
-              t("auth.signUp")
-            )}
-          </button>
-        </form>
-        <p className="mt-4 text-center text-sm text-gray-600">
-          {isLogin ? t("auth.noAccount") : t("auth.haveAccount")}{" "}
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-red-600 hover:text-red-500"
-          >
-            {isLogin ? t("auth.signUp") : t("auth.signIn")}
-          </button>
-        </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
