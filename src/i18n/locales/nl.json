@@ -60,7 +60,7 @@
     "noWishes": "Geen wensen gevonden. Voeg wat wensen toe om te beginnen!",
     "noWishesOther": "Deze gebruiker heeft nog geen wensen toegevoegd",
     "required": "Verplicht",
-    "changeWishlist": "Andere Verlanglijst"
+    "goBack": "Terug"
   },
   "messages": {
     "itemAdded": "Item succesvol toegevoegd!",

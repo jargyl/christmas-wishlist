@@ -41,7 +41,7 @@ export default function Dashboard({
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeftIcon className="w-5 h-5" />
-                <span>{t("wishlist.changeWishlist")}</span>
+                <span>{t("wishlist.goBack")}</span>
               </button>
             ) : (
               <div className="relative ml-auto">

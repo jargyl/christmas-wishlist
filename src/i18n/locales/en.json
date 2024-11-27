@@ -60,7 +60,7 @@
     "noWishes": "No wishes found. Add some wishes to get started!",
     "noWishesOther": "This user hasn't added any wishes yet",
     "required": "Required",
-    "changeWishlist": "Change Wishlist"
+    "goBack": "Back"
   },
   "messages": {
     "itemAdded": "Item added successfully!",
