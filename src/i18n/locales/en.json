@@ -1,0 +1,102 @@
+{
+  "app": {
+    "title": "Family Wishlist",
+    "allWishlists": "All Wishes",
+    "myWishlist": "My List",
+    "chooseWishlist": "Choose a Wishlist",
+    "selectWishlistDescription": "Select a family member's wishlist or view all wishes",
+    "familyMembers": "Family Members"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "username": "Username",
+    "password": "Password",
+    "profilePicture": "Profile Picture URL (optional)",
+    "profilePictureHint": "Enter a URL for your profile picture (jpg, jpeg, png, or webp)",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "loading": "Loading...",
+    "accountCreated": "Account created successfully!",
+    "usernameTaken": "Username already taken",
+    "usernameNoSpaces": "Username cannot contain spaces",
+    "invalidImageUrl": "Please enter a valid image URL (jpg, jpeg, png, or webp)",
+    "usernameRequirements": "Username can only contain letters, numbers, underscores, and hyphens",
+    "invalidCredentials": "Invalid login credentials"
+  },
+  "wishlist": {
+    "possessiveWish": "Wish from {{username}}",
+    "addWish": "Add New Wish",
+    "title": "Title",
+    "description": "Description",
+    "price": "Price",
+    "link": "Link",
+    "priority": "Mark as Priority",
+    "validation": {
+      "required": "Required",
+      "optional": "Optional"
+    },
+    "sort": {
+      "sortBy": "Sort by",
+      "price": "Price",
+      "priority": "Priority"
+    },
+    "actions": {
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "add": "Add Item",
+      "adding": "Adding...",
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "delete": {
+      "confirmTitle": "Delete Wish",
+      "confirmMessage": "Are you sure you want to delete {{title}}? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "noWishes": "No wishes found. Add some wishes to get started!",
+    "noWishesOther": "This user hasn't added any wishes yet",
+    "required": "Required",
+    "goBack": "Back"
+  },
+  "messages": {
+    "itemAdded": "Item added successfully!",
+    "itemUpdated": "Item updated successfully!",
+    "itemDeleted": "Item deleted successfully!",
+    "error": "An error occurred"
+  },
+  "help": {
+    "tooltip": "Need help? Click for tips",
+    "language": "Change language to Dutch",
+    "viewAllTooltip": "View everyone's wishes",
+    "viewUserTooltip": "View {{username}}'s wishes",
+    "quickTips": "Quick Tips",
+    "tips": {
+      "addWish": "To add a new wish, go to My List > Add New Wish",
+      "clickLinks": "If this symbol is present, you can view the item directly online by clicking on the symbol",
+      "priority": "If this star is present next to the item, the item is a high priority wish"
+    }
+  },
+  "welcome": {
+    "getStarted": "Get Started",
+    "createList": {
+      "title": "Create Your Wishlist",
+      "description": "Add items you'd love to receive. Include details like price and priority."
+    },
+    "viewLists": {
+      "title": "View Family Wishlists",
+      "description": "Browse through your family members' wishlists to find the perfect gift."
+    },
+    "shopping": {
+      "title": "Easy Shopping",
+      "description": "Click on item links to go directly to where they can be purchased."
+    },
+    "priority": {
+      "title": "Priority Items",
+      "description": "Items marked with a star are high priority wishes."
+    }
+  }
+}

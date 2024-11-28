@@ -1,0 +1,102 @@
+{
+  "app": {
+    "title": "Familie Kerstlijst",
+    "allWishlists": "Alle Wensen",
+    "myWishlist": "Mijn Lijst",
+    "chooseWishlist": "Kies een Verlanglijst",
+    "selectWishlistDescription": "Selecteer een verlanglijst van een familielid of bekijk alle wensen",
+    "familyMembers": "Familieleden"
+  },
+  "auth": {
+    "signIn": "Inloggen",
+    "signUp": "Registreren",
+    "signOut": "Uitloggen",
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "profilePicture": "Profielfoto URL (optioneel)",
+    "profilePictureHint": "Voer een URL in voor je profielfoto (jpg, jpeg, png, of webp)",
+    "noAccount": "Nog geen account?",
+    "haveAccount": "Heb je al een account?",
+    "loading": "Laden...",
+    "accountCreated": "Account succesvol aangemaakt!",
+    "usernameTaken": "Deze gebruikersnaam is al in gebruik",
+    "usernameNoSpaces": "Gebruikersnaam mag geen spaties bevatten",
+    "invalidImageUrl": "Voer een geldige afbeeldings-URL in (jpg, jpeg, png, of webp)",
+    "usernameRequirements": "Gebruikersnaam mag alleen letters, cijfers, underscores en streepjes bevatten",
+    "invalidCredentials": "Ongeldige inloggegevens"
+  },
+  "wishlist": {
+    "possessiveWish": "Wens van {{username}}",
+    "addWish": "Nieuwe Wens Toevoegen",
+    "title": "Titel",
+    "description": "Beschrijving",
+    "price": "Prijs",
+    "link": "Link",
+    "priority": "Markeer als Prioriteit",
+    "validation": {
+      "required": "Verplicht",
+      "optional": "Optioneel"
+    },
+    "sort": {
+      "sortBy": "Sorteer op",
+      "price": "Prijs",
+      "priority": "Prioriteit"
+    },
+    "actions": {
+      "save": "Wijzigingen Opslaan",
+      "saving": "Opslaan...",
+      "cancel": "Annuleren",
+      "add": "Item Toevoegen",
+      "adding": "Toevoegen...",
+      "delete": "Verwijderen",
+      "edit": "Bewerken"
+    },
+    "delete": {
+      "confirmTitle": "Wens Verwijderen",
+      "confirmMessage": "Weet je zeker dat je {{title}} wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "confirm": "Verwijderen",
+      "cancel": "Annuleren"
+    },
+    "noWishes": "Geen wensen gevonden. Voeg wat wensen toe om te beginnen!",
+    "noWishesOther": "Deze gebruiker heeft nog geen wensen toegevoegd",
+    "required": "Verplicht",
+    "goBack": "Terug"
+  },
+  "messages": {
+    "itemAdded": "Item succesvol toegevoegd!",
+    "itemUpdated": "Item succesvol bijgewerkt!",
+    "itemDeleted": "Item succesvol verwijderd!",
+    "error": "Er is een fout opgetreden"
+  },
+  "help": {
+    "tooltip": "Hulp nodig? Klik voor tips",
+    "language": "Verander taal naar Engels",
+    "viewAllTooltip": "Bekijk alle wensen",
+    "viewUserTooltip": "Bekijk de wensen van {{username}}",
+    "quickTips": "Snelle Tips",
+    "tips": {
+      "addWish": "Om een nieuwe wens toe te voegen, ga naar Mijn Lijst > Nieuwe Wens Toevoegen",
+      "clickLinks": "Als dit symbool is aanwezig, kun je het item direct online bekijken door op het symbool te klikken",
+      "priority": "Als dit symbool is aanwezig naast het item, is het item een hoge prioriteit wens"
+    }
+  },
+  "welcome": {
+    "getStarted": "Aan de Slag",
+    "createList": {
+      "title": "Maak Je Verlanglijst",
+      "description": "Voeg items toe die je graag zou willen ontvangen. Inclusief details zoals prijs en prioriteit."
+    },
+    "viewLists": {
+      "title": "Bekijk Familie Verlanglijsten",
+      "description": "Blader door de verlanglijsten van je familieleden om het perfecte cadeau te vinden."
+    },
+    "shopping": {
+      "title": "Eenvoudig Winkelen",
+      "description": "Klik op item links om direct naar de webshop te gaan waar ze gekocht kunnen worden."
+    },
+    "priority": {
+      "title": "Prioriteit Items",
+      "description": "Items gemarkeerd met een ster zijn hoge prioriteit wensen."
+    }
+  }
+}
