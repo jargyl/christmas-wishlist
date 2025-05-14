@@ -2,6 +2,9 @@
 
 Welcome to the **Family Christmas Wishlist** project! This guide will help you set up and run the project locally. Follow the steps below to get started.
 
+![Login Screenshot](https://i.imgur.com/7QuVO4o.jpeg)
+![Dashboard Screenshot](https://i.imgur.com/58q4oU1.png)
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
